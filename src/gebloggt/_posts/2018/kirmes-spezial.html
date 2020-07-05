@@ -7,15 +7,12 @@ date: 2018-08-13
 <section>
     <p>
         Das war sie auch schon wieder, die Cranger Kirmes. Damit die Tage bis zu Nächsten nicht so lang werden haben wir
-        hier für Euch noch mal alle Rezepte
-        unseres Kirmes-Spezials zusammengefasst.
+        hier für Euch noch mal alle Rezepte unseres Kirmes-Spezials zusammengefasst.
     </p>
 
     <div class="row">
-        {% for recipe in site.recipes %}
-            {% if recipe.tags contains "kirmes2018" %}
-                {% include recipe-teaser.html recipe=recipe template='col' %}
-            {% endif %}
+        {% for post in collections.crange_2018_special_collection %}
+            {% include 'recipe-teaser.html', recipe: post, template: 'col' %}
         {% endfor %}
     </div>
 
