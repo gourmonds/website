@@ -1,0 +1,18 @@
+del {
+  text-decoration: line-through;
+}
+
+// subheading and teaser based on bootstrap fontSize:
+h1, header {
+  div.subheading, div.teaser {
+    font-size: $h1-font-size * 0.4;
+    color: $lightened-text-color
+  }
+}
+
+.recipe-teaser-col {
+  .inner {
+    background-color: $gray-200;
+    max-width: 300px; // that's the maximal image width
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "layout": "page",
+  "tags": "howto",
+  "permalink": "gezeigt/{{ page.fileSlug }}.html"
+}

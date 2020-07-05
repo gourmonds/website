@@ -1,0 +1,31 @@
+{% if template == 'col' %}
+<div class="col-xl-3 col-md-4 col-sm-6 mb-4 recipe-teaser-col" data-component="recipe-teaser" data-tags="{{ recipe.data.tags | join ' ' }}">
+    <div class="inner">
+        <a href="{{ recipe.url }}">
+            <img src="{{ recipe.data.teaserimage }}" class="figure-img img-fluid" alt="{{ recipe.data.title }}">
+        </a>
+        <article class="p-3">
+            <header>
+                <h4>{{ recipe.data.title }}</h4>
+            </header>
+            <p>{{ recipe.data.description }}</p>
+            <a href="{{ recipe.url }}">mehr...</a>
+        </article>
+    </div>
+</div>
+{% endif %}
+
+{% if template == 'card' %}
+<div class="card" data-tags="{{ recipe.data.tags | join ' ' }}">
+    <a href="{{ recipe.url }}">
+        <img class="card-img-top" src="{{ recipe.data.teaserimage }}" alt="{{ recipe.data.title }}">
+    </a>
+    <div class="card-body">
+        <h5 class="card-title">{{ recipe.data.title }}</h5>
+        <p class="card-text">
+            {{ recipe.data.description }}
+        </p>
+        <a href="{{ recipe.url }}">mehr&hellip;</a>
+    </div>
+</div>
+{% endif %}

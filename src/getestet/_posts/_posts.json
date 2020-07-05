@@ -1,0 +1,5 @@
+{
+  "layout": "page",
+  "tags": "test",
+  "permalink": "getestet/{{ page.fileSlug }}.html"
+}

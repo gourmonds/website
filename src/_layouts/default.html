@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+    <html lang="de">
+    {% include 'head.html' %}
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <aside class="col-lg-2 d-print-none" id="sidebar">
+                    <div id="toggle-nav">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 col-lg-12">
+                            <a href="/"><img src="/assets/images/logo.svg" class="logo img-fluid mt-4 mb-4" alt="Logo: GourMonds"></a>
+                        </div>
+                        <nav class="main col-8 col-lg-12">
+                            <ul>
+                                <li><a href="/gezeigt/">Gezeigt</a></li>
+                                <li><a href="/gegrillt/">Gegrillt</a></li>
+                                <li><a href="/getestet/">Getestet</a></li>
+                                <li><a href="/gebloggt/">Gebloggt</a></li>
+                                <li><a href="/impressum.html">Impressum</a></li>
+                                <li><a href="/datenschutz.html">Datenschutz</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </aside>
+                <div class="col-lg-10 pt-4" id="main-content">
+                    <main class="container">
+                        {{ content }}
+                    </main>
+                </div>
+            </div>
+        </div>
+        {% include 'matomo.html' %}
+    </body>
+</html>

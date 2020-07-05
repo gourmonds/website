@@ -1,0 +1,5 @@
+{
+  "layout": "post",
+  "tags": "blog",
+  "permalink": "gebloggt/{{ date | date: '%Y/%m/%d' }}/{{ page.fileSlug }}.html"
+}

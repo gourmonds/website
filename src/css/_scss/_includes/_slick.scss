@@ -1,0 +1,18 @@
+$slick-font-path: '/assets/slick/';
+$slick-loader-path: '/assets/slick/';
+$slick-arrow-color: black;
+
+@import "../../../../node_modules/slick-slider/slick/slick.scss";
+@import "../../../../node_modules/slick-slider/slick/slick-theme.scss";
+
+.slick {
+  .slick-arrow {
+    z-index: 10;
+    &.slick-prev {
+      left: -10px;
+    }
+    &.slick-next {
+      right: -10px;
+    }
+  }
+}

@@ -1,0 +1,61 @@
+@import "_includes/bootstrap";
+@import "_includes/variables";
+@import "_includes/common";
+
+@page {
+  size: A4;
+  margin: 1cm 2cm 3cm 3cm;
+}
+
+body {
+  padding:0;
+  color: #000;
+  font-size: 10pt;
+}
+
+%print-headlines {
+  page-break-after: avoid;
+}
+
+@for $i from 1 through 6 {
+  h#{$i} {
+    @extend %print-headlines;
+    font-size: #{2-($i/6)}em;
+
+  }
+}
+
+.table {
+  page-break-inside: avoid;
+  th, td {
+    padding: 0.1em;
+    border: 0;
+  }
+  tr {
+    background-color: #fff !important;
+  }
+}
+
+a.print-url {
+  color: #000;
+  text-decoration: none;
+  &::after {
+    content: " (" attr(href) ") ";
+  }
+}
+
+%print-grid-column {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+@for $i from 1 through 12 {
+  .col-print-#{$i} {
+    @extend %print-grid-column;
+    $width: #{percentage(round($i*8.33)/100)};
+    max-width: $width;
+    flex: 0 0 $width;
+  }
+}

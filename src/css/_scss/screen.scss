@@ -1,0 +1,18 @@
+@import "_includes/bootstrap";
+@import "_includes/variables";
+@import "_includes/fancybox";
+@import "_includes/slick";
+@import "_includes/sidebar";
+@import "_includes/common";
+
+body {
+  overflow-y: scroll;
+}
+
+#main-content {
+  min-height: 100vh;
+}
+
+.shadow {
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+}

@@ -1,0 +1,21 @@
+<head>
+    <title>{% if title %}{{ title | replace: "&shy;", "" | escape}} &ndash; {{ project.title}} {% else %} {{ project.title | escape }}{% endif %}</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link type="text/plain" rel="author" href="{{ project.url }}/humans.txt" />
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}"/>
+    {% if title       %}<meta property="og:title" content="{{ title | escape }}"/>{% endif %}
+    {% if teaserimage %}<meta property="og:image" content="{{ project.url }}{{ teaserimage | replace: '.preview', ''}}"/>{% endif %}
+    {% if description %}<meta name="description" content="{{ description | strip_html | escape | normalize_whitespace | truncate: 160 }}" />{% endif %}
+    {% if description %}<meta property="og:description" content="{{ description | strip_html | escape | normalize_whitespace | truncate: 160 }}"/>{% endif %}
+    {% if robots      %}<meta name="robots" content="{{ robots }}">{% endif %}
+
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/screen.css">
+    <link rel="stylesheet" type="text/css" media="print" href="/css/print.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png" />
+
+    <script src="/js/3rdParty.js"></script>
+    <script src="/js/custom.js"></script>
+</head>

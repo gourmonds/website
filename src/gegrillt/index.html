@@ -1,0 +1,30 @@
+---
+layout: page
+title: Gegrillt
+permalink: "gegrillt/index.html"
+---
+
+<section>
+    <h1>Gegrillt:</h1>
+    <p>...und auch gebacken, gekocht, gebraten, geräuchert, geschüttelt und gerührt.</p>
+    <hr />
+
+    <form class="mb-4 d-print-none" data-component="form-recipe-search">
+        <div class="form-row">
+            <div class="col">
+                <input data-component="search-term" type="text" class="form-control" placeholder="Suchbegriff">
+            </div>
+        </div>
+    </form>
+
+    <div class="row" data-component="recipes-isotope">
+
+        <p data-component="no-results-message" class="d-none col-12">Zu Deiner Suche konnte leider kein Rezept gefunden werden.</p>
+
+        {% for post in collections.recipe %}
+        {% include 'recipe-teaser.html', recipe: post, template: 'col' %}
+        {% endfor %}
+    </div>
+
+</section>
+

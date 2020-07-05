@@ -1,0 +1,40 @@
+---
+layout: default
+---
+<div itemscope itemtype="http://schema.org/Recipe">
+
+    <meta itemprop="author" content="GourMonds"/>
+    {% if description %}<meta itemprop="description" content="{{ description | escape }}"/>{% endif %}
+    {% if prepTime %}<meta itemprop="prepTime" content="{{ prepTime }}"/>{% endif %}
+    {% if cookTime %}<meta itemprop="cookTime" content="{{ cookTime }}"/>{% endif %}
+
+    <div class="d-print-none">
+        <h1 itemprop="name">{{ title }}</h1>
+        <p>{% if description %}{{ description }}{% endif %}</p>
+        <hr />
+    </div>
+
+    <div class="d-none d-print-block mb-2">
+        <div class="row">
+            <div class="col">
+                <div>
+                    <h1 itemprop="name">{{ title }}</h1>
+                    {% if description %}{{ description }}{% endif %}
+                </div>
+            </div>
+            <div class="col text-right">
+                <img src="{{ teaserimage }}" />
+            </div>
+        </div>
+    </div>
+
+    {{ content }}
+
+    <div class="d-none d-print-block mt-2">
+        <hr />
+        <div class="d-flex align-items-center">
+            <div class="mr-2"></div>
+            <div class="small">{{ site.url }}{{ page.url }}</div>
+        </div>
+    </div>
+</div>
