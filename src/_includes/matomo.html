@@ -1,18 +1,19 @@
 {% if project.tracking %}
 <!-- Matomo -->
-<script>
-    var _paq = _paq || [];
+<script type="text/javascript">
+    var _paq = window._paq = window._paq || [];
     _paq.push(["setDoNotTrack", true]);
     _paq.push(["disableCookies"]);
-    _paq.push(['trackPageView']);
     _paq.push(['enableLinkTracking']);
+    _paq.push(['trackPageView']);
     (function() {
-        var u="//piwik.quirks-modus.de/";
-        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        var u="https://stats.quirks-modus.de/";
+        _paq.push(['setTrackerUrl', u+'matomo.php']);
         _paq.push(['setSiteId', '1']);
         var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+        g.type='text/javascript'; g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
     })();
 </script>
+<noscript><p><img src="https://stats.quirks-modus.de/matomo.php?idsite=1&amp;rec=1" style="border:0;" alt="" /></p></noscript>
 <!-- End Matomo Code -->
 {% endif %}
