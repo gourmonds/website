@@ -6,7 +6,7 @@
 
     $(function () {
 
-        $('.slick').slick();
+        $('[data-slick]').slick();
 
         $('#toggle-nav').on('click', function () {
             $('nav.main').toggleClass('open');

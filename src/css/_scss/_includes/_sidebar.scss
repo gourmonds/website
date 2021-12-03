@@ -24,6 +24,7 @@ nav.main ul {
       li {
         a {
           padding: 10px 8px 10px 0;
+          text-decoration: none;
           &:hover {
             background: linear-gradient(to left, #222, #000);
             border-top-right-radius: 20px;
@@ -36,7 +37,7 @@ nav.main ul {
   }
 }
 
-@include media-breakpoint-down(md) {
+@include media-breakpoint-down(lg) {
   #toggle-nav {
     cursor: pointer;
     position:absolute;

@@ -6,13 +6,27 @@ $slick-arrow-color: black;
 @import "../../../../node_modules/slick-slider/slick/slick-theme.scss";
 
 .slick {
-  .slick-arrow {
-    z-index: 10;
-    &.slick-prev {
-      left: -10px;
+  &.recipe-slider {
+    img {
+      width: 100%;
+      height: auto;
+      padding-right: 15px;
     }
-    &.slick-next {
-      right: -10px;
+
+    margin-right: -15px;
+
+    .slick-arrow {
+      z-index: 10;
+
+      &.slick-prev {
+        left: -20px;
+      }
+
+      &.slick-next {
+        right: -10px;
+      }
     }
+
   }
+
 }
