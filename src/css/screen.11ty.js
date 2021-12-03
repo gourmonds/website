@@ -1,5 +1,5 @@
 const path = require('path');
-const sass = require('node-sass-promise');
+const sass = require('sass');
 const CleanCSS = require('clean-css');
 
 module.exports = class {
@@ -12,7 +12,7 @@ module.exports = class {
 
     async render() {
         const file = path.join(__dirname, '_scss', 'screen.scss');
-        const {css} = await sass.render({file})
+        const {css} = sass.renderSync({file})
         const output = new CleanCSS({}).minify(css.toString()).styles
 
         return output;

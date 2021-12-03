@@ -12,7 +12,7 @@
     "@babel/preset-env": "^7.10.4",
     "clean-css": "^4.2.3",
     "html-minifier": "^4.0.0",
-    "node-sass-promise": "^1.0.0",
+    "sass": "^1.44.0",
     "uglify-js": "^3.10.0"
   },
   "dependencies": {
