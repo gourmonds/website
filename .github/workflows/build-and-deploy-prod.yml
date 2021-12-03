@@ -1,0 +1,35 @@
+name: Build and deploy to prod
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-and-deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout respository
+      uses: actions/checkout@v2
+    
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16.13.1'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build static website
+      run: npm run build:prod
+    
+    - name: Deploy with rsync
+      uses: up9cloud/action-rsync@master
+      env:
+        HOST: w00e57f7.kasserver.com
+        USER: ssh-w018eeb1
+        KEY: ${{secrets.DEPLOY_SSH_KEY}}
+        SOURCE: ./build/
+        TARGET: /www/htdocs/w018eeb1/www.gourmonds.de/www
