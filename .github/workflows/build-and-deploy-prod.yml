@@ -33,3 +33,8 @@ jobs:
         KEY: ${{secrets.DEPLOY_SSH_KEY}}
         SOURCE: ./build/
         TARGET: /www/htdocs/w018eeb1/www.gourmonds.de/www
+
+    - name: Ping Google
+      uses: dlehmann/google-ping-action@master
+      with:
+        sitemap-url: https://www.gourmonds.de/sitemap.xml
