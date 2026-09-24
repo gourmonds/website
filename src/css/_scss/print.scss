@@ -70,3 +70,10 @@ a.print-url {
   --bs-table-striped-color: #000;
   color: #000;
 }
+
+// ignore the dark mode torch and the easter egg overlay when printing
+#torch,
+.darkmode-icon,
+.moonrise {
+  display: none !important;
+}
