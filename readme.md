@@ -2,8 +2,8 @@
 ## requirements
 
 * from https://nodejs.org
-    * node >= v16.13.1
-    * npm >= 8.1.2
+    * node >= v24 (current LTS, see `.nvmrc`)
+    * npm >= 11
 
 ## install dependencies
 
