@@ -1,13 +1,18 @@
 {
+  "name": "gourmonds-website",
+  "private": true,
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "build": "env npx @11ty/eleventy",
     "build:prod": "env ELEVENTY_ENV=prod env ENABLE_TRACKING=true npx @11ty/eleventy",
-    "serve": "npx @11ty/eleventy --serve --port=8081",
-    "serve:prod": "env ELEVENTY_ENV=prod npx @11ty/eleventy --serve --port=8081"
+    "serve": "npx @11ty/eleventy --serve",
+    "serve:prod": "env ELEVENTY_ENV=prod npx @11ty/eleventy --serve"
   },
   "author": "GourMonds e.V.",
   "devDependencies": {
-    "@11ty/eleventy": "^0.12.1",
+    "@11ty/eleventy": "^3.1.6",
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
     "clean-css": "^5.2.2",

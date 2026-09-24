@@ -42,7 +42,7 @@ pagination:
                 <span class="sr-only">Zurück</span>
             </a>
         </li>
-        <li class="page-item"><span class="page-link-text"><strong>{{ (pagination.pageNumber | plus: 1) }}</strong></span></li>
+        <li class="page-item"><span class="page-link-text"><strong>{{ pagination.pageNumber | plus: 1 }}</strong></span></li>
         <li class="disabled"><span class="page-link-text" href="#">/</span></li>
         <li class="page-item disabled"><span class="page-link">{{ pagination.pages | size }}</span></li>
         <li class="page-item{% unless pagination.href.next %} disabled{% endunless %}">

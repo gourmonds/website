@@ -4,8 +4,10 @@ const babel = require("@babel/core");
 const UglifyJS = require("uglify-js");
 
 module.exports = {
-    htmlMinifier: (content, outputPath) => {
-        if (outputPath.endsWith(".html")) {
+    // regular function: Eleventy passes the page as `this`
+    htmlMinifier: function (content) {
+        const outputPath = this.page.outputPath;
+        if (outputPath && outputPath.endsWith(".html")) {
             return htmlmin.minify(content, configuration.htmlMinifier);
         }
         return content;
