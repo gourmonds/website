@@ -267,7 +267,7 @@
           '<path d="M240 45l6-5v10z"/>' +
         '</svg>' +
       '</div>' +
-      '<p class="moonrise-claim" role="status"><span>Die GourMonds</span>' +
+      '<p class="moonrise-claim" role="status"><img src="/assets/images/logo.svg" alt="GourMonds –">' +
         'der beste BBQ-Verein unter\'m <em>Wanne-Eickeler</em> Mond!</p>' +
       '<p class="moonrise-hint">Klicken oder Esc zum Schließen</p>';
     document.body.appendChild(scene);
