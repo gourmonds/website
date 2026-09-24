@@ -295,3 +295,44 @@
   }
 
 })();
+
+
+// 404: rescue the sausage from the coals with the tongs.
+// Still lying in the coals after five seconds, it chars; rescued in time, the
+// five-second rule applies and it stays fine on the grate.
+(function () {
+  const scene = document.querySelector('[data-component="rescue-sausage"]');
+  if (!scene) {
+    return;
+  }
+  const button = scene.querySelector('[data-rescue]');
+  const message = document.querySelector('[data-rescue-message]');
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const CHAR_AFTER = 5000;
+  const fellAt = Date.now();
+
+  const charTimer = window.setTimeout(() => scene.classList.add('is-charred'), CHAR_AFTER);
+
+  button.addEventListener('click', () => {
+    window.clearTimeout(charTimer);
+    const seconds = (Date.now() - fellAt) / 1000;
+    const formatted = seconds.toLocaleString('de-DE', {maximumFractionDigits: 1});
+    const inTime = !scene.classList.contains('is-charred');
+    const text = inTime
+      ? 'Puh, die Wurst ist wieder auf dem Rost &ndash; die Seite leider nicht. '
+      : 'Zu spät, die Wurst ist verkohlt &ndash; genau wie diese Seite. ';
+    const verdict = inTime
+      ? 'Gerettet nach ' + formatted + ' Sekunden. Fünf-Sekunden-Regel: gilt! Guten Appetit.'
+      : formatted + ' Sekunden in der Glut. Da gilt die Fünf-Sekunden-Regel nicht mehr.';
+
+    button.disabled = true;
+    scene.classList.add('is-grabbing');
+    window.setTimeout(() => scene.classList.add('is-lifted'), calm ? 0 : 650);
+    window.setTimeout(() => {
+      scene.classList.remove('is-grabbing', 'is-lifted');
+      scene.classList.add('is-rescued');
+      message.innerHTML = text + '<span class="nf-verdict" role="status"></span>';
+      message.querySelector('.nf-verdict').textContent = verdict;
+    }, calm ? 0 : 1400);
+  });
+})();
