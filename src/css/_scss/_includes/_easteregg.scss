@@ -1,0 +1,192 @@
+// Easter egg: "Der Mond über Wanne-Eickel" (konami code, or 5 taps on the footer logo).
+// Timeline (all delays relative to .is-on): night falls, the moon rises,
+// a bratwurst on a fork flies across it (E.T. style), then the claim fades in.
+
+.moonrise {
+  --moon: min(46vmin, 420px);
+  --moon-top: 12vh;
+
+  position: fixed;
+  inset: 0;
+  z-index: 10002; // above torch and dark mode switch
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .8s ease;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% calc(var(--moon-top) + var(--moon) * .5), rgba(255, 214, 140, .12), transparent 70%),
+    linear-gradient(to bottom, #04060d 0%, #0a0908 70%, #140c06 100%);
+
+  &.is-on {
+    opacity: 1;
+  }
+
+  &.is-off {
+    opacity: 0;
+  }
+}
+
+// stars
+.moonrise-stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 8% 14%, #fff, transparent),
+    radial-gradient(1px 1px at 17% 42%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 26% 8%, #fff, transparent),
+    radial-gradient(1px 1px at 33% 61%, #fff, transparent),
+    radial-gradient(1px 1px at 41% 27%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 58% 6%, #fff, transparent),
+    radial-gradient(1px 1px at 64% 49%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 72% 19%, #fff, transparent),
+    radial-gradient(1px 1px at 81% 57%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 89% 11%, #fff, transparent),
+    radial-gradient(1px 1px at 94% 36%, #fff, transparent),
+    radial-gradient(1px 1px at 4% 71%, #fff, transparent),
+    radial-gradient(1px 1px at 51% 78%, #fff, transparent),
+    radial-gradient(1px 1px at 77% 82%, #fff, transparent);
+  opacity: 0;
+  animation: moonrise-stars 4s ease 1s forwards, moonrise-twinkle 3s ease-in-out 5s infinite alternate;
+}
+
+// the moon, pale gold like the logo, with a few craters
+.moonrise-moon {
+  position: absolute;
+  left: 50%;
+  top: var(--moon-top);
+  width: var(--moon);
+  height: var(--moon);
+  margin-left: calc(var(--moon) * -.5);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 34%, rgba(160, 130, 70, .22) 0 6%, transparent 7%),
+    radial-gradient(circle at 62% 26%, rgba(160, 130, 70, .18) 0 4%, transparent 5%),
+    radial-gradient(circle at 55% 62%, rgba(160, 130, 70, .2) 0 9%, transparent 10%),
+    radial-gradient(circle at 26% 70%, rgba(160, 130, 70, .14) 0 5%, transparent 6%),
+    radial-gradient(circle at 75% 48%, rgba(160, 130, 70, .12) 0 3%, transparent 4%),
+    radial-gradient(circle at 38% 36%, #fffaf0 0%, #fbe7b5 45%, #e8c77e 80%, #d6ae62 100%);
+  box-shadow:
+    0 0 40px rgba(255, 230, 170, .55),
+    0 0 120px rgba(255, 210, 130, .35),
+    0 0 260px rgba(255, 196, 38, .18);
+  transform: translateY(calc(100vh - var(--moon-top) + 20px));
+  animation: moonrise-rise 3.2s cubic-bezier(.22, .9, .3, 1) .4s forwards;
+}
+
+// the flyer crosses the moon: outer element moves left to right,
+// inner element does the (slight) arc and wobble
+.moonrise-flyer {
+  --flyer: calc(var(--moon) * .9);
+
+  position: absolute;
+  left: 0;
+  top: calc(var(--moon-top) + var(--moon) * .5 - var(--flyer) * .19);
+  width: var(--flyer);
+  transform: translateX(calc(var(--flyer) * -1.1));
+  animation: moonrise-fly-x 3.4s linear 3.5s forwards;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    animation: moonrise-fly-y 3.4s ease-in-out 3.5s forwards;
+  }
+}
+
+.moonrise-claim {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--moon-top) + var(--moon) + 6vh);
+  width: min(90vw, 760px);
+  margin: 0;
+  transform: translate(-50%, 16px);
+  opacity: 0;
+  text-align: center;
+  font-family: $bbq-font-display;
+  font-size: clamp(1.4rem, 4.2vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  color: $bbq-text;
+  text-shadow: 0 0 24px rgba(255, 210, 130, .35);
+  animation: moonrise-claim 1s ease 5.6s forwards;
+
+  span {
+    display: block;
+    margin-bottom: .4rem;
+    font-size: .55em;
+    letter-spacing: .25em;
+    color: $bbq-flame;
+  }
+
+  // keep "Wanne-Eickeler" together
+  em {
+    font-style: normal;
+    white-space: nowrap;
+  }
+}
+
+.moonrise-hint {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  font-size: .8rem;
+  color: rgba($bbq-text, .4);
+  opacity: 0;
+  animation: moonrise-fade 1s ease 7s forwards;
+}
+
+@keyframes moonrise-stars {
+  to { opacity: .9; }
+}
+
+@keyframes moonrise-twinkle {
+  from { opacity: .9; }
+  to   { opacity: .55; }
+}
+
+@keyframes moonrise-rise {
+  to { transform: translateY(0); }
+}
+
+@keyframes moonrise-fly-x {
+  to { transform: translateX(100vw); }
+}
+
+@keyframes moonrise-fly-y {
+  0%   { transform: translateY(18%) rotate(-10deg); }
+  30%  { transform: translateY(-4%) rotate(-4deg); }
+  50%  { transform: translateY(-10%) rotate(0deg); }
+  70%  { transform: translateY(-4%) rotate(5deg); }
+  100% { transform: translateY(14%) rotate(9deg); }
+}
+
+@keyframes moonrise-claim {
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@keyframes moonrise-fade {
+  to { opacity: 1; }
+}
+
+// reduced motion: no rising, no flight – just the finished picture
+@media (prefers-reduced-motion: reduce) {
+  .moonrise-stars,
+  .moonrise-moon,
+  .moonrise-flyer,
+  .moonrise-flyer svg,
+  .moonrise-claim,
+  .moonrise-hint {
+    animation: none;
+  }
+
+  .moonrise-stars { opacity: .9; }
+  .moonrise-moon { transform: none; }
+  .moonrise-flyer { transform: translateX(calc(50vw - var(--flyer) * .5)); }
+  .moonrise-claim { opacity: 1; transform: translate(-50%, 0); }
+  .moonrise-hint { opacity: 1; }
+}
