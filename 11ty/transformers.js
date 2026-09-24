@@ -1,11 +1,11 @@
-const htmlmin = require('html-minifier');
+const htmlmin = require('html-minifier-terser');
 const {configuration} = require('./configuration');
 const babel = require("@babel/core");
 const UglifyJS = require("uglify-js");
 
 module.exports = {
     // regular function: Eleventy passes the page as `this`
-    htmlMinifier: function (content) {
+    htmlMinifier: async function (content) {
         const outputPath = this.page.outputPath;
         if (outputPath && outputPath.endsWith(".html")) {
             return htmlmin.minify(content, configuration.htmlMinifier);
