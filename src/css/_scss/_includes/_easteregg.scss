@@ -112,12 +112,13 @@
   text-shadow: 0 0 24px rgba(255, 210, 130, .35);
   animation: moonrise-claim 1s ease 5.6s forwards;
 
-  span {
+  img {
     display: block;
-    margin-bottom: .4rem;
-    font-size: .55em;
-    letter-spacing: .25em;
-    color: $bbq-flame;
+    width: auto;
+    height: 1.25em;
+    margin: 0 auto .5em;
+    border-radius: 0;
+    filter: drop-shadow(0 0 12px rgba($bbq-flame, .35));
   }
 
   // keep "Wanne-Eickeler" together
