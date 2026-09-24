@@ -4,6 +4,9 @@
 ### jetbrains
 .idea
 
+### Claude Code (local preview config etc.)
+.claude/
+
 ### Operating Sytems
 # Windows thumbnail cache files
 Thumbs.db
