@@ -1,0 +1,300 @@
+// hero
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: calc(88vh - #{$header-height});
+  margin-top: -$header-height;
+  padding: calc(#{$header-height} + 3rem) 0 5rem;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    linear-gradient(to top, $bbq-bg 0%, rgba($bbq-bg, .7) 35%, rgba($bbq-bg, .15) 70%, rgba($bbq-bg, .5) 100%),
+    linear-gradient(to right, rgba($bbq-bg, .85) 0%, transparent 65%),
+    var(--hero-image) 60% 55% / cover no-repeat;
+
+  // warm glow from below, like a bed of coals
+  &::after {
+    content: "";
+    position: absolute;
+    inset: auto -10% -30% -10%;
+    height: 60%;
+    z-index: -1;
+    background: radial-gradient(ellipse at 50% 100%, rgba($bbq-ember, .45), rgba($bbq-ember, 0) 65%);
+    animation: glow 5s ease-in-out infinite alternate;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1140px;
+  }
+
+  h1 {
+    font-size: clamp(3rem, 9vw, 7rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: .95;
+    letter-spacing: -.01em;
+    max-width: 12ch;
+    margin: 0 0 1.5rem;
+    text-shadow: 0 4px 30px rgba(0, 0, 0, .6);
+  }
+
+  .lead {
+    max-width: 38rem;
+    font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+    color: rgba($bbq-text, .85);
+    margin-bottom: 2rem;
+  }
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+}
+
+.btn-ember, .btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  padding: .85rem 1.6rem;
+  border-radius: 999px;
+  font-family: $bbq-font-display;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  transition: transform .2s $ease-out, box-shadow .2s, background .2s, color .2s;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.btn-ember {
+  background: $bbq-gradient;
+  color: #1a0d05;
+  box-shadow: 0 8px 30px rgba($bbq-ember, .35);
+
+  &:hover {
+    color: #1a0d05;
+    box-shadow: 0 12px 40px rgba($bbq-ember, .55);
+  }
+}
+
+.btn-ghost {
+  border: 1px solid rgba(255, 255, 255, .25);
+  color: $bbq-text;
+  background: rgba(0, 0, 0, .25);
+  backdrop-filter: blur(6px);
+
+  &:hover {
+    border-color: $bbq-flame;
+    color: $bbq-flame;
+  }
+}
+
+// rising embers
+.embers {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  span {
+    position: absolute;
+    bottom: -10px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: $bbq-flame;
+    box-shadow: 0 0 6px 2px rgba($bbq-ember, .8);
+    opacity: 0;
+    animation: ember 7s linear infinite;
+  }
+
+  @for $i from 1 through 14 {
+    span:nth-child(#{$i}) {
+      left: ((($i * 37) % 97) + 2) * 1%;
+      animation-delay: #{($i * 0.53) % 7}s;
+      animation-duration: #{5 + ($i % 5) * 1.1}s;
+      @if $i % 3 == 0 {
+        width: 3px;
+        height: 3px;
+      }
+      @if $i % 4 == 0 {
+        width: 5px;
+        height: 5px;
+      }
+    }
+  }
+}
+
+@keyframes ember {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0; }
+  10%  { opacity: 1; }
+  50%  { transform: translate(-25px, -45vh) scale(.8); }
+  100% { transform: translate(20px, -90vh) scale(.2); opacity: 0; }
+}
+
+@keyframes glow {
+  from { opacity: .7; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .embers { display: none; }
+  .hero::after { animation: none; }
+}
+
+// intro
+
+.intro {
+  margin-bottom: 6rem;
+
+  .team-photo {
+    position: relative;
+    margin: 0;
+
+    // never crop: the whole team has to stay visible
+    img {
+      display: block;
+      border-radius: $radius;
+      width: 100%;
+      height: auto;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 10px -10px -10px 10px;
+      border: 1px solid rgba($bbq-ember, .5);
+      border-radius: $radius;
+      z-index: -1;
+    }
+  }
+}
+
+.stats {
+  list-style: none;
+  margin: 4rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: $bbq-line;
+  border: 1px solid $bbq-line;
+  border-radius: $radius;
+  overflow: hidden;
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  li {
+    background: $bbq-surface;
+    padding: 1.75rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+  }
+
+  strong {
+    font-family: $bbq-font-display;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1;
+    background: $bbq-gradient;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  span {
+    color: $bbq-muted;
+    font-size: .9rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+}
+
+// achievements
+
+.trophies {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0 0;
+  display: grid;
+  gap: 1rem;
+
+  @include media-breakpoint-up(lg) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // plain items (no report to link to) stay flat and quiet
+  li {
+    position: relative;
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid rgba($bbq-line, .7);
+    border-radius: $radius;
+    transition: border-color .2s, transform .2s $ease-out, box-shadow .2s;
+
+    // items linking to a report (via .stretched-link) look like cards
+    // and carry an arrow button
+    &:has(.stretched-link) {
+      padding-right: 4.5rem;
+      background: $bbq-surface;
+      border-color: $bbq-line;
+
+      &:has(strong) {
+        background: linear-gradient(135deg, rgba($bbq-ember, .12), transparent 60%), $bbq-surface;
+      }
+
+      @include link-arrow;
+
+      &:hover {
+        border-color: rgba($bbq-ember, .6);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px -10px rgba($bbq-ember, .35);
+
+        .stretched-link {
+          color: $bbq-ember;
+        }
+      }
+    }
+
+    &:not(:has(.stretched-link)) {
+      .year, strong {
+        opacity: .75;
+      }
+    }
+  }
+
+  .year {
+    flex: none;
+    font-family: $bbq-font-display;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: $bbq-ember;
+    min-width: 3.2rem;
+  }
+
+  strong {
+    display: block;
+    font-family: $bbq-font-display;
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: .02em;
+    color: $bbq-flame;
+  }
+
+  div {
+    color: rgba($bbq-text, .85);
+  }
+}

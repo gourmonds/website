@@ -1,12 +1,13 @@
 // Configuration
 
 @import "../../../../node_modules/bootstrap/scss/functions";
+@import "theme";
 @import "../../../../node_modules/bootstrap/scss/variables";
 @import "../../../../node_modules/bootstrap/scss/mixins";
 @import "../../../../node_modules/bootstrap/scss/utilities";
 
-$pagination-color:        $gray-700;
-$pagination-hover-color:  $gray-700;
+$pagination-color:        $bbq-text;
+$pagination-hover-color:  $bbq-flame;
 $pagination-border-color: transparent;
 $pagination-bg:           transparent;
 $pagination-hover-border-color:        transparent;
@@ -14,8 +15,8 @@ $pagination-padding-y:                .5rem;
 $pagination-padding-x:                .85rem;
 $pagination-padding-y-sm:             .25rem;
 $pagination-padding-x-sm:             .5rem;
-$pagination-active-bg:                $gray-800;
-$pagination-active-border-color:      $gray-800;
+$pagination-active-bg:                $bbq-ember;
+$pagination-active-border-color:      $bbq-ember;
 
 // Layout & components
 @import "../../../../node_modules/bootstrap/scss/root";

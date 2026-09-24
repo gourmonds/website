@@ -1,0 +1,83 @@
+// BBQ theme tokens – loaded before bootstrap's variables so they can override its defaults.
+
+$bbq-bg:        #0a0908;
+$bbq-surface:   #141210;
+$bbq-surface-2: #1d1a17;
+$bbq-line:      #2c2723;
+$bbq-text:      #ece6df;
+$bbq-muted:     #a39a90;
+$bbq-ember:     #ff5a1f;
+$bbq-flame:     #ffc426; // logo gold
+$bbq-gradient:  linear-gradient(120deg, $bbq-ember 0%, #ff8a1f 45%, $bbq-flame 100%);
+
+$bbq-font-display: "Oswald", "Arial Narrow", sans-serif;
+$bbq-font-body:    "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+// bootstrap overrides (print keeps bootstrap's light defaults)
+$bbq-print: false !default;
+
+// declared up front (null = unset, so bootstrap's !default still applies for print)
+$body-bg: null !default;
+$body-color: null !default;
+$link-color: null !default;
+$link-hover-color: null !default;
+$link-decoration: null !default;
+$border-color: null !default;
+$text-muted: null !default;
+$secondary: null !default;
+$font-family-sans-serif: null !default;
+$headings-font-family: null !default;
+$headings-font-weight: null !default;
+$headings-line-height: null !default;
+$table-color: null !default;
+$table-striped-color: null !default;
+$table-striped-bg: null !default;
+$table-border-color: null !default;
+$input-bg: null !default;
+$input-color: null !default;
+$input-border-color: null !default;
+$input-placeholder-color: null !default;
+$input-focus-bg: null !default;
+$input-focus-color: null !default;
+$input-focus-border-color: null !default;
+$input-focus-box-shadow: null !default;
+$card-bg: null !default;
+$card-border-color: null !default;
+$hr-color: null !default;
+$hr-opacity: null !default;
+
+@if not $bbq-print {
+  $body-bg:    $bbq-bg !global;
+  $body-color: $bbq-text !global;
+  $link-color: $bbq-flame !global;
+  $link-hover-color: $bbq-ember !global;
+  $link-decoration: none !global;
+  $border-color: $bbq-line !global;
+  $text-muted: $bbq-muted !global;
+  $secondary: $bbq-muted !global;
+
+  $font-family-sans-serif: $bbq-font-body !global;
+  $headings-font-family:   $bbq-font-display !global;
+  $headings-font-weight:   600 !global;
+  $headings-line-height:   1.1 !global;
+
+  $table-color:        $bbq-text !global;
+  $table-striped-color: $bbq-text !global;
+  $table-striped-bg:   rgba(255, 255, 255, .035) !global;
+  $table-border-color: $bbq-line !global;
+
+  $input-bg:                $bbq-surface !global;
+  $input-color:             $bbq-text !global;
+  $input-border-color:      $bbq-line !global;
+  $input-placeholder-color: $bbq-muted !global;
+  $input-focus-bg:          $bbq-surface-2 !global;
+  $input-focus-color:       $bbq-text !global;
+  $input-focus-border-color: $bbq-ember !global;
+  $input-focus-box-shadow:  0 0 0 .25rem rgba($bbq-ember, .25) !global;
+
+  $card-bg:           $bbq-surface !global;
+  $card-border-color: $bbq-line !global;
+
+  $hr-color:   $bbq-line !global;
+  $hr-opacity: 1 !global;
+}

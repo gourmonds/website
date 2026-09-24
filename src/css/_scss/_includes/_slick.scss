@@ -1,6 +1,6 @@
 $slick-font-path: '/assets/slick/';
 $slick-loader-path: '/assets/slick/';
-$slick-arrow-color: black;
+$slick-arrow-color: $bbq-flame;
 
 @import "../../../../node_modules/slick-slider/slick/slick.scss";
 @import "../../../../node_modules/slick-slider/slick/slick-theme.scss";
