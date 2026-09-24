@@ -1,0 +1,4 @@
+# Apache (live server). Deployed with rsync --delete: rules only live here.
+
+# serve our own error page; a local path keeps the 404 status (a full URL would redirect)
+ErrorDocument 404 /404.html
