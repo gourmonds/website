@@ -207,3 +207,91 @@
   render();
 
 })();
+
+
+// easter egg "Der Mond über Wanne-Eickel": konami code, or 5 quick taps/clicks
+// on the footer logo (no keyboard on phones)
+(function () {
+  const KONAMI = 'ArrowUp ArrowUp ArrowDown ArrowDown ArrowLeft ArrowRight ArrowLeft ArrowRight b a';
+  const DURATION = 11000;
+  let keys = [];
+
+  document.addEventListener('keydown', e => {
+    if (e.target.closest('input, textarea, select, [contenteditable]')) {
+      return;
+    }
+    keys = keys.concat(e.key.length === 1 ? e.key.toLowerCase() : e.key).slice(-10);
+    if (keys.join(' ') === KONAMI) {
+      keys = [];
+      moonrise();
+    }
+  });
+
+  const footerLogo = document.querySelector('#site-footer .logo');
+  let taps = 0;
+  let tapTimer;
+  if (footerLogo) {
+    footerLogo.addEventListener('click', () => {
+      taps += 1;
+      clearTimeout(tapTimer);
+      tapTimer = setTimeout(() => taps = 0, 600);
+      if (taps >= 5) {
+        taps = 0;
+        moonrise();
+      }
+    });
+  }
+
+  function moonrise() {
+    if (document.querySelector('.moonrise')) {
+      return;
+    }
+
+    const scene = document.createElement('div');
+    scene.className = 'moonrise';
+    scene.innerHTML =
+      '<div class="moonrise-stars" aria-hidden="true"></div>' +
+      '<div class="moonrise-moon" aria-hidden="true"></div>' +
+      '<div class="moonrise-flyer" aria-hidden="true">' +
+        '<svg viewBox="0 0 240 90" fill="#050403" xmlns="http://www.w3.org/2000/svg">' +
+          // fork: handle, neck, three tines
+          '<rect x="0" y="41" width="104" height="10" rx="5"/>' +
+          '<path d="M98 41h14l8-8h5v26h-5l-8-8h-14z"/>' +
+          '<rect x="123" y="34" width="26" height="4" rx="2"/>' +
+          '<rect x="123" y="44" width="26" height="4" rx="2"/>' +
+          '<rect x="123" y="54" width="26" height="4" rx="2"/>' +
+          // bratwurst (slightly bent, with dark grey grill marks) and its twisted ends
+          '<path d="M142 36Q188 22 228 31Q241 35 239 46Q237 58 224 59Q186 64 144 59Q132 57 132 47Q132 39 142 36Z"/>' +
+          '<path d="M160 56l12-24M180 56l12-25M200 56l12-24M220 55l9-18" fill="none" stroke="#3a3a3a" stroke-width="2.5" stroke-linecap="round"/>' +
+          '<path d="M130 47l-7-5v10z"/>' +
+          '<path d="M240 45l6-5v10z"/>' +
+        '</svg>' +
+      '</div>' +
+      '<p class="moonrise-claim" role="status"><span>Die GourMonds</span>' +
+        'der beste BBQ-Verein unter\'m <em>Wanne-Eickeler</em> Mond!</p>' +
+      '<p class="moonrise-hint">Klicken oder Esc zum Schließen</p>';
+    document.body.appendChild(scene);
+
+    // next frame, so the fade-in transition runs
+    window.requestAnimationFrame(() => window.requestAnimationFrame(() => scene.classList.add('is-on')));
+
+    const timer = setTimeout(close, DURATION);
+
+    function onKey(e) {
+      if (e.key === 'Escape') {
+        close();
+      }
+    }
+
+    function close() {
+      clearTimeout(timer);
+      document.removeEventListener('keydown', onKey);
+      scene.classList.add('is-off');
+      setTimeout(() => scene.remove(), 800);
+    }
+
+    scene.addEventListener('click', close);
+    document.addEventListener('keydown', onKey);
+  }
+
+})();
