@@ -1,9 +1,50 @@
 ---
 layout: page
+title: Seite nicht gefunden
 robots: noindex, nofollow
 sitemap: false
 permalink: 404.html
 ---
-<article>
-    <h1>404 <div class="subline">Seite nicht gefunden :(</div></h1>
+<article class="not-found">
+    <div class="not-found-scene" data-component="rescue-sausage">
+        <img class="nf-grill" src="/assets/images/404/grill.webp" width="992" height="803" alt="">
+
+        <button type="button" class="nf-sausage" data-rescue aria-label="Wurst mit der Grillzange retten">
+            <svg class="nf-smoke" viewBox="0 0 120 120" aria-hidden="true" fill="none" stroke="#bdb4aa" stroke-width="5" stroke-linecap="round">
+                <path d="M30 118 q-10 -18 0 -36 q10 -18 0 -36 q-10 -18 0 -36"/>
+                <path d="M60 116 q10 -18 0 -36 q-10 -18 0 -36 q10 -18 0 -36"/>
+                <path d="M90 118 q-10 -18 0 -36 q10 -18 0 -36 q-10 -18 0 -36"/>
+            </svg>
+            <img class="nf-sausage-good" src="/assets/images/404/wurst.webp" width="758" height="272" alt="">
+            <img class="nf-sausage-charred" src="/assets/images/404/wurst-verkohlt.webp" width="845" height="269" alt="">
+        </button>
+
+        <svg class="nf-tongs" viewBox="0 0 60 300" aria-hidden="true">
+            <defs>
+                <linearGradient id="nf-steel" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#8a8279"/>
+                    <stop offset=".5" stop-color="#e2ddd6"/>
+                    <stop offset="1" stop-color="#8a8279"/>
+                </linearGradient>
+            </defs>
+            <g fill="none" stroke="url(#nf-steel)" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M30 4 L16 280 L24 296" stroke-width="7"/>
+                <path d="M30 4 L44 280 L36 296" stroke-width="7"/>
+                <circle cx="30" cy="10" r="7" stroke-width="5"/>
+            </g>
+        </svg>
+    </div>
+
+    <div class="not-found-text">
+        <p class="kicker">Fehler 404</p>
+        <h1>Da ist uns was durch den Rost gefallen.</h1>
+        <p class="lead" data-rescue-message>
+            Diese Seite liegt jetzt irgendwo in der Glut. Passiert den Besten &ndash;
+            sogar Deutschen Amateur&shy;grillmeistern.
+        </p>
+        <div class="hero-actions">
+            <a class="btn-ember" href="/">Zurück zur Startseite</a>
+            <a class="btn-ghost" href="/gegrillt/">Lieber was Frisches vom Grill</a>
+        </div>
+    </div>
 </article>

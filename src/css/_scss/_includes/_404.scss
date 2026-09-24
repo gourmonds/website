@@ -1,0 +1,195 @@
+// 404: the page fell through the grate. Clicking the sausage lets the tongs
+// rescue it (states set by custom.js: is-grabbing -> is-lifted -> is-rescued).
+// Still in the coals after five seconds, the sausage chars (is-charred).
+// All positions are percentages of the grill image (992 x 803).
+
+$nf-ease: cubic-bezier(.3, .7, .3, 1);
+
+.not-found {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+  padding: 1rem 0 2rem;
+
+  @include media-breakpoint-up(lg) {
+    grid-template-columns: 1.1fr 1fr;
+    gap: 3rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.4rem);
+  }
+
+  .lead {
+    color: rgba($bbq-text, .85);
+    margin-bottom: 2rem;
+  }
+}
+
+.not-found-scene {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+  aspect-ratio: 992 / 803;
+  overflow: hidden; // the waiting tongs sit above the scene
+
+  // warm glow of the coals behind the grill
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 15% 5% 20%;
+    background: radial-gradient(ellipse at 50% 45%, rgba($bbq-ember, .35), transparent 70%);
+    animation: nf-glow 3s ease-in-out infinite alternate;
+  }
+}
+
+.nf-grill {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
+// the sausage is the button; it lies in the coals and moves onto the grate
+.nf-sausage {
+  position: absolute;
+  left: 28.8%;
+  top: 42%;
+  width: 44%;
+  aspect-ratio: 845 / 272;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transform: rotate(-4deg);
+  transition: top .7s $nf-ease, left .7s $nf-ease, transform .7s $nf-ease;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .6));
+
+  &:focus-visible {
+    outline: 2px dashed $bbq-flame;
+    outline-offset: 6px;
+    border-radius: 40px;
+  }
+
+  &:disabled {
+    cursor: default;
+  }
+
+  img {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    border-radius: 0;
+    transition: opacity 2s ease;
+  }
+}
+
+.nf-sausage-good {
+  left: 5.3%;
+  width: 89.7%;
+}
+
+.nf-sausage-charred {
+  left: 0;
+  width: 100%;
+  opacity: 0;
+}
+
+// smoke rises from the sausage, each wisp offset in time
+.nf-smoke {
+  position: absolute;
+  left: 20%;
+  bottom: 55%;
+  width: 60%;
+  height: 160%;
+  overflow: visible;
+  pointer-events: none;
+
+  path {
+    opacity: 0;
+    animation: nf-smoke 3.2s ease-out infinite;
+
+    &:nth-child(2) { animation-delay: 1.1s; }
+    &:nth-child(3) { animation-delay: 2.1s; }
+  }
+}
+
+.nf-tongs {
+  position: absolute;
+  left: 50%;
+  top: -60%;
+  height: 50%;
+  aspect-ratio: 60 / 300;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, .6));
+  transition: top .6s $nf-ease;
+  pointer-events: none;
+}
+
+// 1. tongs come down and grab the sausage
+.not-found-scene.is-grabbing .nf-tongs {
+  top: -3%;
+}
+
+// 2. both go up, the sausage lands on the grate
+.not-found-scene.is-lifted,
+.not-found-scene.is-rescued {
+  .nf-sausage {
+    top: 9%;
+    left: 26.8%;
+    transform: none;
+  }
+}
+
+.not-found-scene.is-lifted .nf-tongs {
+  top: -36%;
+}
+
+// 3. tongs leave again; a rescued sausage stops smoking, a charred one doesn't
+.not-found-scene.is-rescued {
+  .nf-tongs { top: -60%; }
+  .nf-smoke { display: none; }
+}
+
+// left in the coals for more than five seconds: charred – and it keeps smoking
+.not-found-scene.is-charred {
+  .nf-sausage-good { opacity: 0; }
+  .nf-sausage-charred { opacity: 1; }
+  .nf-smoke { display: block; }
+}
+
+.nf-verdict {
+  display: block;
+  margin-top: .75rem;
+  font-family: $bbq-font-display;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  color: $bbq-flame;
+  animation: nf-pop .5s cubic-bezier(.3, 1.6, .5, 1);
+}
+
+@keyframes nf-glow {
+  from { opacity: .7; }
+  to   { opacity: 1; }
+}
+
+@keyframes nf-smoke {
+  0%   { opacity: 0; transform: translateY(0); }
+  20%  { opacity: .5; }
+  100% { opacity: 0; transform: translateY(-40px); }
+}
+
+@keyframes nf-pop {
+  from { opacity: 0; transform: scale(.85); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .not-found-scene::before, .nf-smoke path, .nf-verdict { animation: none; }
+  .nf-smoke path { opacity: .35; }
+  .nf-sausage, .nf-sausage img, .nf-tongs { transition: none; }
+}
