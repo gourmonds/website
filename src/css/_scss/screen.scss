@@ -2,17 +2,56 @@
 @import "_includes/variables";
 @import "_includes/fancybox";
 @import "_includes/slick";
-@import "_includes/sidebar";
+@import "_includes/header";
+@import "_includes/home";
 @import "_includes/common";
+
+@font-face {
+  font-family: "Oswald";
+  src: url("/assets/fonts/oswald.woff2") format("woff2");
+  font-weight: 200 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/assets/fonts/inter.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/assets/fonts/inter-italic.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+html {
+  scroll-padding-top: $header-height + 16px;
+}
 
 body {
   overflow-y: scroll;
+  background:
+    radial-gradient(ellipse 80% 40% at 50% -10%, rgba($bbq-ember, .12), transparent 70%),
+    $bbq-bg;
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
 }
 
 #main-content {
-  min-height: 100vh;
+  min-height: 60vh;
+  padding: 3rem 0 5rem;
 }
 
 .shadow {
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .5);
+}
+
+::selection {
+  background: $bbq-ember;
+  color: #fff;
 }

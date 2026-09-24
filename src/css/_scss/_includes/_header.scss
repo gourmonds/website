@@ -1,0 +1,233 @@
+#site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: $header-height;
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
+
+  // blur lives on a pseudo element: backdrop-filter on the header itself would
+  // become the containing block of the fixed mobile nav
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgba($bbq-bg, .82);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+  }
+
+  .header-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .brand {
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+
+    .logo {
+      height: 26px;
+      width: auto;
+    }
+  }
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid $bbq-line;
+  border-radius: 50%;
+  background: transparent;
+  color: $bbq-text;
+  cursor: pointer;
+  transition: border-color .2s, color .2s, background .2s;
+
+  &:hover, &:focus-visible {
+    border-color: $bbq-ember;
+    color: $bbq-flame;
+    background: rgba($bbq-ember, .08);
+  }
+}
+
+// the dark mode button lives outside the header (see default.html) so it can
+// sit above the torch overlay. It is pinned to where the slot in the header is.
+.darkmode-slot {
+  flex: none;
+  width: 42px;
+  height: 42px;
+}
+
+.darkmode-icon {
+  position: fixed;
+  z-index: 10000; // above #torch
+  top: ($header-height - 1px - 42px) * .5; // 1px: header border
+  right: calc(#{$grid-gutter-width * .5} + 42px + 1rem); // left of the burger
+
+  @include media-breakpoint-up(lg) {
+    right: $grid-gutter-width * .5;
+  }
+
+  @each $breakpoint, $max-width in $container-max-widths {
+    @if $breakpoint == xl or $breakpoint == xxl {
+      @include media-breakpoint-up($breakpoint) {
+        right: calc((100% - #{$max-width}) / 2 + #{$grid-gutter-width * .5});
+      }
+    }
+  }
+}
+
+// dark mode: glows like an illuminated light switch
+.dark .darkmode-icon {
+  color: $bbq-flame;
+  border-color: rgba($bbq-flame, .8);
+  background: radial-gradient(circle, rgba($bbq-flame, .18), rgba($bbq-flame, .04) 70%);
+  box-shadow:
+    0 0 6px rgba($bbq-flame, .55),
+    0 0 18px rgba($bbq-flame, .3),
+    0 0 40px rgba($bbq-ember, .18),
+    inset 0 0 8px rgba($bbq-flame, .35);
+  animation: switch-glow 3.5s ease-in-out infinite alternate;
+
+  svg {
+    filter: drop-shadow(0 0 3px rgba($bbq-flame, .9));
+  }
+}
+
+@keyframes switch-glow {
+  from { box-shadow: 0 0 5px rgba($bbq-flame, .45), 0 0 14px rgba($bbq-flame, .22), 0 0 32px rgba($bbq-ember, .12), inset 0 0 7px rgba($bbq-flame, .3); }
+  to   { box-shadow: 0 0 7px rgba($bbq-flame, .6),  0 0 20px rgba($bbq-flame, .34), 0 0 44px rgba($bbq-ember, .2),  inset 0 0 9px rgba($bbq-flame, .4); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dark .darkmode-icon { animation: none; }
+}
+
+nav.main ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  a {
+    position: relative;
+    display: block;
+    font-family: $bbq-font-display;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: $bbq-text;
+    transition: color .2s;
+
+    &:hover, &[aria-current="page"] {
+      color: $bbq-flame;
+    }
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  #toggle-nav {
+    display: none;
+  }
+
+  nav.main ul {
+    display: flex;
+    gap: .25rem;
+
+    li.secondary {
+      display: none;
+    }
+
+    a {
+      padding: .5rem .9rem;
+      font-size: .95rem;
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: .9rem;
+        right: .9rem;
+        bottom: .2rem;
+        height: 2px;
+        background: $bbq-gradient;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform .3s $ease-out;
+      }
+
+      &:hover::after, &[aria-current="page"]::after {
+        transform: scaleX(1);
+      }
+    }
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  #toggle-nav {
+    flex-direction: column;
+    gap: 5px;
+
+    span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: currentColor;
+      border-radius: 1px;
+      transition: transform .3s $ease-out, opacity .2s;
+    }
+  }
+
+  .nav-open #toggle-nav span {
+    &:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    &:nth-child(2) { opacity: 0; }
+    &:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  }
+
+  .nav-open {
+    overflow: hidden;
+  }
+
+  nav.main {
+    position: fixed;
+    inset: $header-height 0 0 0;
+    background:
+      radial-gradient(ellipse 120% 60% at 50% 110%, rgba($bbq-ember, .25), transparent 60%),
+      $bbq-bg;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity .3s, transform .3s $ease-out, visibility 0s .3s;
+    overflow-y: auto;
+
+    &.open {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      transition: opacity .3s, transform .3s $ease-out;
+    }
+
+    ul {
+      padding: 2rem 1.5rem;
+
+      li {
+        border-bottom: 1px solid $bbq-line;
+      }
+
+      a {
+        padding: 1rem 0;
+        font-size: 2rem;
+        font-weight: 600;
+      }
+
+      li.secondary a {
+        font-size: 1rem;
+        color: $bbq-muted;
+      }
+    }
+  }
+}

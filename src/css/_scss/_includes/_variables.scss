@@ -1,3 +1,43 @@
-// colors:
+// layout:
 
-$lightened-text-color: lighten($color-contrast-dark , 50%);
+$header-height: 72px;
+$radius: 14px;
+$radius-sm: 8px;
+$ease-out: cubic-bezier(.2, .8, .2, 1);
+
+// round arrow button marking a fully clickable box. Call it inside the box;
+// the box needs position: relative. Pass $vertical: bottom to pin it to the
+// bottom corner instead of centering it.
+@mixin link-arrow($vertical: center, $offset: 1.25rem) {
+  &::after {
+    content: "→";
+    position: absolute;
+    right: $offset;
+    width: 2.25rem;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba($bbq-ember, .5);
+    border-radius: 50%;
+    color: $bbq-ember;
+    font-size: 1.1rem;
+    line-height: 1;
+    pointer-events: none;
+    transition: background .2s, color .2s, border-color .2s, transform .2s $ease-out;
+
+    @if $vertical == bottom {
+      bottom: $offset;
+    } @else {
+      top: 50%;
+      margin-top: -1.125rem;
+    }
+  }
+
+  &:hover::after {
+    background: $bbq-gradient;
+    border-color: transparent;
+    color: #1a0d05;
+    transform: translateX(3px);
+  }
+}

@@ -6,10 +6,9 @@
         </a>
         <article class="p-3">
             <header>
-                <h4>{{ recipe.data.title }}</h4>
+                <h4><a href="{{ recipe.url }}" class="stretched-link">{{ recipe.data.title }}</a></h4>
             </header>
             <p>{{ recipe.data.description }}</p>
-            <a href="{{ recipe.url }}">mehr...</a>
         </article>
     </div>
 </div>

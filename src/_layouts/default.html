@@ -3,38 +3,69 @@
     {% include 'head.html' %}
     <body class="position-relative">
     <div id="torch"></div>
-    <svg data-btn-toggle-dark-mode class="darkmode-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"/></svg>
-        <div class="container-fluid">
-            <div class="row">
-                <aside class="col-lg-2 d-print-none" id="sidebar">
-                    <div id="toggle-nav">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4 col-lg-12">
-                            <a href="/"><img src="/assets/images/logo.svg" class="logo img-fluid mt-4 mb-4" alt="Logo: GourMonds"></a>
-                        </div>
-                        <nav class="main col-8 col-lg-12">
-                            <ul>
-                                <li><a href="/gezeigt/">Gezeigt</a></li>
-                                <li><a href="/gegrillt/">Gegrillt</a></li>
-                                <li><a href="/getestet/">Getestet</a></li>
-                                <li><a href="/gebloggt/">Gebloggt</a></li>
-                                <li><a href="/impressum.html">Impressum</a></li>
-                                <li><a href="/datenschutz.html">Datenschutz</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </aside>
-                <div class="col-lg-10 pt-4" id="main-content">
-                    <main class="container">
-                        {{ content }}
-                    </main>
+
+        <header id="site-header" class="d-print-none">
+            <div class="container-xl header-inner">
+                <a href="/" class="brand"><img src="/assets/images/logo.svg" class="logo" alt="Logo: GourMonds"></a>
+                <nav class="main" id="main-nav" aria-label="Hauptnavigation">
+                    <ul>
+                        <li><a href="/gezeigt/"{% if page.url contains '/gezeigt/' %} aria-current="page"{% endif %}>Gezeigt</a></li>
+                        <li><a href="/gegrillt/"{% if page.url contains '/gegrillt/' %} aria-current="page"{% endif %}>Gegrillt</a></li>
+                        <li><a href="/getestet/"{% if page.url contains '/getestet/' %} aria-current="page"{% endif %}>Getestet</a></li>
+                        <li><a href="/gebloggt/"{% if page.url contains '/gebloggt/' %} aria-current="page"{% endif %}>Gebloggt</a></li>
+                        <li class="secondary"><a href="/impressum.html">Impressum</a></li>
+                        <li class="secondary"><a href="/datenschutz.html">Datenschutz</a></li>
+                    </ul>
+                </nav>
+                <span class="darkmode-slot" aria-hidden="true"></span>
+                <button type="button" id="toggle-nav" class="icon-btn" aria-label="Menü öffnen" aria-controls="main-nav" aria-expanded="false">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </header>
+        <!-- outside the header so it can sit above the torch overlay -->
+        <button type="button" data-btn-toggle-dark-mode class="icon-btn darkmode-icon d-print-none" aria-label="Dark-Mode umschalten" title="Dark-Mode">
+            <svg xmlns="http://www.w3.org/2000/svg" height="22" viewBox="0 -960 960 960" width="22" fill="currentColor" aria-hidden="true"><path d="M480-120q-150 0-255-105T120-480q0-150 105-255t255-105q14 0 27.5 1t26.5 3q-41 29-65.5 75.5T444-660q0 90 63 153t153 63q55 0 101-24.5t75-65.5q2 13 3 26.5t1 27.5q0 150-105 255T480-120Zm0-80q88 0 158-48.5T740-375q-20 5-40 8t-40 3q-123 0-209.5-86.5T364-660q0-20 3-40t8-40q-78 32-126.5 102T200-480q0 116 82 198t198 82Zm-10-270Z"/></svg>
+        </button>
+
+        {% if hero %}
+        <section class="hero d-print-none" style="--hero-image: url('{{ hero.image }}')">
+            <div class="embers" aria-hidden="true">{% for i in (1..14) %}<span></span>{% endfor %}</div>
+            <div class="container-xl hero-content">
+                {% if hero.kicker %}<p class="kicker">{{ hero.kicker }}</p>{% endif %}
+                <h1>{{ hero.headline }}</h1>
+                {% if hero.lead %}<p class="lead">{{ hero.lead }}</p>{% endif %}
+                <div class="hero-actions">
+                    <a class="btn-ember" href="/gegrillt/">Zu den Rezepten</a>
+                    <a class="btn-ghost" href="/gebloggt/">Aus dem Blog</a>
                 </div>
             </div>
+        </section>
+        {% endif %}
+
+        <div id="main-content">
+            <main class="container-xl">
+                {{ content }}
+            </main>
         </div>
+
+        <footer id="site-footer" class="d-print-none">
+            <div class="container-xl footer-inner">
+                <div>
+                    <img src="/assets/images/logo.svg" class="logo" alt="GourMonds">
+                    <p>Der beste BBQ-Verein unter'm Wanne-Eickeler Mond. Seit 2008.</p>
+                </div>
+                <nav aria-label="Footer">
+                    <a href="/gezeigt/">Gezeigt</a>
+                    <a href="/gegrillt/">Gegrillt</a>
+                    <a href="/getestet/">Getestet</a>
+                    <a href="/gebloggt/">Gebloggt</a>
+                    <a href="/impressum.html">Impressum</a>
+                    <a href="/datenschutz.html">Datenschutz</a>
+                </nav>
+            </div>
+        </footer>
+
         {% include 'matomo.html' %}
         <script src="/js/custom.js"></script>
     </body>
