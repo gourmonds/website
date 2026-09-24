@@ -1,11 +1,7 @@
 const path = require('path');
-const {error404Page} = require('./middlewares');
 
 module.exports = {
     configuration: {
-        middlewares: {
-            error404Page: path.join('build', '404.html')
-        },
         staticFiles: (() => {
             const staticFiles = {};
             staticFiles['src/assets'] = 'assets';
@@ -19,13 +15,9 @@ module.exports = {
         liquid: {
             dynamicPartials: true
         },
-        dataDeepMerge: true,
-        browserSync: {
-            callbacks: {
-                ready: (err, bs) => {
-                    bs.addMiddleware("*", error404Page);
-                }
-            }
+        // Eleventy Dev Server answers unknown urls with build/404.html by itself
+        server: {
+            port: 8081
         },
         htmlMinifier: {
             useShortDoctype: true,

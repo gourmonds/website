@@ -7,9 +7,13 @@ const env = process.env.ELEVENTY_ENV || 'dev';
 module.exports = function (eleventyConfig) {
 
     // set configurations
-    eleventyConfig.setDataDeepMerge(configuration.dataDeepMerge);
     eleventyConfig.setLiquidOptions(configuration.liquid);
-    eleventyConfig.setBrowserSyncConfig(configuration.browserSync);
+    eleventyConfig.setServerOptions(configuration.server);
+
+    // css and js are rendered by .11ty.js templates reading these folders,
+    // so a change there has to trigger a rebuild
+    eleventyConfig.addWatchTarget('./src/css/_scss/');
+    eleventyConfig.addWatchTarget('./src/js/_js/');
 
     // add custom collections
     eleventyConfig.addCollection('recipe', recipeTagCollection);
@@ -36,9 +40,8 @@ module.exports = function (eleventyConfig) {
             layouts: '_layouts',
             data: '_data'
         },
-        dataTemplateEngine: 'liquid',
         markdownTemplateEngine: 'liquid',
         htmlTemplateEngine: 'liquid',
-        templateFormats: ['html', 'js', 'liquid', 'njk']
+        templateFormats: ['html', '11ty.js', 'liquid', 'njk']
     }
 };
