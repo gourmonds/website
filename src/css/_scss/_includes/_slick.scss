@@ -10,20 +10,21 @@ $slick-arrow-color: $bbq-flame;
     img {
       width: 100%;
       height: auto;
-      padding-right: 15px;
+      padding-right: $grid-gutter-width * .5;
     }
 
-    margin-right: -15px;
+    // must not exceed the container padding, or the page scrolls sideways on phones
+    margin-right: $grid-gutter-width * -.5;
 
     .slick-arrow {
       z-index: 10;
 
       &.slick-prev {
-        left: -20px;
+        left: $grid-gutter-width * -.5;
       }
 
       &.slick-next {
-        right: -10px;
+        right: 0;
       }
     }
 
