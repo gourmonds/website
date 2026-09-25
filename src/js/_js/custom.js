@@ -6,7 +6,23 @@
 
   $(function () {
 
-    $('[data-slick]').slick();
+    // closing fancybox focuses the opening link; inside a slider that scrolls the
+    // (overflow: hidden) slick list sideways and leaves the slider broken
+    $.fancybox.defaults.backFocus = false;
+
+    // slick's clones (infinite mode) must not show up as extra images in the
+    // fancybox gallery; a click on a clone opens its original instead
+    $('[data-slick]')
+      .on('init reInit', function () {
+        $(this).find('.slick-cloned [data-fancybox]').removeAttr('data-fancybox');
+      })
+      .on('click', '.slick-cloned a', function (e) {
+        e.preventDefault();
+        $(this).closest('[data-slick]')
+          .find('.slick-slide:not(.slick-cloned) a[href="' + $(this).attr('href') + '"]')
+          .trigger('click');
+      })
+      .slick();
 
     $('#toggle-nav').on('click', function () {
       const open = $('nav.main').toggleClass('open').hasClass('open');
