@@ -2,7 +2,7 @@
 <div class="col-xl-3 col-md-4 col-sm-6 mb-4 recipe-teaser-col" data-component="recipe-teaser" data-tags="{{ recipe.data.tags | join: ' ' }}">
     <div class="inner">
         <a href="{{ recipe.url }}">
-            <img src="{{ recipe.data.teaserimage }}" class="figure-img img-fluid" alt="{{ recipe.data.title }}">
+            <img src="{{ recipe.data.teaserimage }}" class="figure-img img-fluid" alt="{{ recipe.data.title | escape }}">
         </a>
         <article class="p-3">
             <header>
@@ -17,7 +17,7 @@
 {% if template == 'card' %}
 <div class="card" data-tags="{{ recipe.data.tags | join: ' ' }}">
     <a href="{{ recipe.url }}">
-        <img class="card-img-top" src="{{ recipe.data.teaserimage }}" alt="{{ recipe.data.title }}">
+        <img class="card-img-top" src="{{ recipe.data.teaserimage }}" alt="{{ recipe.data.title | escape }}">
     </a>
     <div class="card-body">
         <h5 class="card-title">{{ recipe.data.title }}</h5>

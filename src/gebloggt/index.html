@@ -15,9 +15,9 @@ pagination:
             <div class="col-md-3">
                 <a href="{{ post.url }}">
                     {% if post.data.teaserimage %}
-                    <img src="{{ post.data.teaserimage }}" class="img-fluid"/>
+                    <img src="{{ post.data.teaserimage }}" class="img-fluid" alt="{{ post.data.title | escape }}"/>
                     {% else %}
-                    <img src="/assets/images/posts/nopic.preview.jpg" class="img-fluid"/>
+                    <img src="/assets/images/posts/nopic.preview.jpg" class="img-fluid" alt=""/>
                     {% endif %}
                 </a>
             </div>
@@ -39,7 +39,7 @@ pagination:
         <li class="page-item{% unless pagination.href.previous %} disabled{% endunless %}">
             <a class="page-link" href="{{ pagination.href.previous }}" aria-label="Zurück">
                 <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Zurück</span>
+                <span class="visually-hidden">Zurück</span>
             </a>
         </li>
         <li class="page-item"><span class="page-link-text"><strong>{{ pagination.pageNumber | plus: 1 }}</strong></span></li>
@@ -48,7 +48,7 @@ pagination:
         <li class="page-item{% unless pagination.href.next %} disabled{% endunless %}">
             <a class="page-link" href="{{ pagination.href.next }}" aria-label="Weiter">
                 <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Weiter</span>
+                <span class="visually-hidden">Weiter</span>
             </a>
         </li>
     </ul>

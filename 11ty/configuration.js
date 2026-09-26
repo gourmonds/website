@@ -6,8 +6,6 @@ module.exports = {
             const staticFiles = {};
             staticFiles['src/assets'] = 'assets';
             staticFiles['src/.htaccess'] = '.htaccess';
-            staticFiles[path.join('node_modules', 'slick-slider', 'slick', 'fonts')] = path.join('assets', 'slick');
-            staticFiles[path.join('node_modules', 'slick-slider', 'slick', 'ajax-loader.gif')] = path.join('assets', 'slick', 'ajax-loader.gif');
             staticFiles[path.join('node_modules', '@fontsource', 'fira-sans-extra-condensed', 'files', 'fira-sans-extra-condensed-latin-400-normal.woff2')] = path.join('assets', 'fonts', 'fira-sans-extra-condensed-400.woff2');
             staticFiles[path.join('node_modules', '@fontsource', 'fira-sans-extra-condensed', 'files', 'fira-sans-extra-condensed-latin-500-normal.woff2')] = path.join('assets', 'fonts', 'fira-sans-extra-condensed-500.woff2');
             staticFiles[path.join('node_modules', '@fontsource', 'fira-sans-extra-condensed', 'files', 'fira-sans-extra-condensed-latin-600-normal.woff2')] = path.join('assets', 'fonts', 'fira-sans-extra-condensed-600.woff2');
@@ -17,6 +15,17 @@ module.exports = {
             staticFiles[path.join('node_modules', '@fontsource', 'libertinus-sans', 'files', 'libertinus-sans-latin-700-normal.woff2')] = path.join('assets', 'fonts', 'libertinus-sans-bold.woff2');
             return staticFiles;
         })(),
+        images: {
+            formats: ['avif', 'auto'],
+            widths: [400, 800, 1300],
+            // output: /img/ in the build folder (default for absolute image paths)
+            htmlOptions: {
+                imgAttributes: {
+                    loading: 'lazy',
+                    decoding: 'async'
+                }
+            }
+        },
         liquid: {
             dynamicPartials: true
         },

@@ -2,6 +2,7 @@ const {recipeTagCollection, testTagCollection, howtoTagCollection, blogTagCollec
 const {normalize_whitespace} = require('./11ty/filters');
 const {configuration} = require('./11ty/configuration');
 const {htmlMinifier} = require('./11ty/transformers');
+const {eleventyImageTransformPlugin} = require('@11ty/eleventy-img');
 const env = process.env.ELEVENTY_ENV || 'dev';
 
 module.exports = function (eleventyConfig) {
@@ -24,6 +25,12 @@ module.exports = function (eleventyConfig) {
 
     // add filters
     eleventyConfig.addLiquidFilter('normalize_whitespace', normalize_whitespace);
+
+    // responsive images: every <img> in the output becomes a <picture> with
+    // AVIF plus the original format, several widths (never upscaled), width/height
+    // and lazy loading; opt out per image with eleventy:ignore, override the
+    // lazy loading with loading="eager" (and a sizes attribute) above the fold
+    eleventyConfig.addPlugin(eleventyImageTransformPlugin, configuration.images);
 
     // add output transformers
     if ('prod' === env) {

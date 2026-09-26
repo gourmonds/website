@@ -1,101 +1,450 @@
-(function ($) {
+// icons shared by the slider and the lightbox
+const ICONS = {
+  arrow: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>',
+  zoom: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M8 10.5h5M10.5 8v5"/></svg>',
+  close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>'
+};
 
-  'use strict';
 
+// main navigation (burger menu on small screens)
+(function () {
+  const toggle = document.getElementById('toggle-nav');
+  const nav = document.querySelector('nav.main');
+  if (!toggle || !nav) {
+    return;
+  }
+
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    document.body.classList.toggle('nav-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+  });
+})();
+
+
+// recipe search on /gegrillt/: filters the teasers by title, description and
+// tags; runs as a view transition, so cards shrink away and the rest glides
+// to their new place (see _common.scss)
+(function () {
+  const list = document.querySelector('[data-component="recipe-list"]');
+  const form = document.querySelector('[data-component="form-recipe-search"]');
+  if (!list || !form) {
+    return;
+  }
+
+  const input = form.querySelector('[data-component="search-term"]');
+  const noResults = list.querySelector('[data-component="no-results-message"]');
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let timeout;
 
-  $(function () {
-
-    // closing fancybox focuses the opening link; inside a slider that scrolls the
-    // (overflow: hidden) slick list sideways and leaves the slider broken
-    $.fancybox.defaults.backFocus = false;
-
-    // slick's clones (infinite mode) must not show up as extra images in the
-    // fancybox gallery; a click on a clone opens its original instead
-    $('[data-slick]')
-      .on('init reInit', function () {
-        $(this).find('.slick-cloned [data-fancybox]').removeAttr('data-fancybox');
-      })
-      .on('click', '.slick-cloned a', function (e) {
-        e.preventDefault();
-        $(this).closest('[data-slick]')
-          .find('.slick-slide:not(.slick-cloned) a[href="' + $(this).attr('href') + '"]')
-          .trigger('click');
-      })
-      .slick();
-
-    $('#toggle-nav').on('click', function () {
-      const open = $('nav.main').toggleClass('open').hasClass('open');
-      $('body').toggleClass('nav-open', open);
-      $(this).attr('aria-expanded', open).attr('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
-    });
-
-    const $recipesIsotope = $('[data-component="recipes-isotope"]');
-    const $formRecipeSearch = $('[data-component="form-recipe-search"]');
-    const $noResultsMessage = $recipesIsotope.find('[data-component="no-results-message"]');
-
-    let qsRegex = null;
-
-    if ($recipesIsotope.length) {
-      $recipesIsotope.imagesLoaded(function () {
-        $recipesIsotope.isotope({
-          itemSelector: '[data-component="recipe-teaser"]',
-          layoutMode: 'fitRows',
-          filter: function () {
-            return (qsRegex !== null) ? $(this).getSearchableText().match(qsRegex) : true;
-          }
-        });
-        checkResults();
-      });
-    }
-
-    if ($formRecipeSearch.length) {
-      qsRegex = new RegExp($formRecipeSearch.val(), 'gi');
-
-      $formRecipeSearch.on('submit', function () {
-        return false;
-      });
-
-      $formRecipeSearch.find('[data-component="search-term"]').on('keydown', function (e) {
-        const $input = $(this);
-        clearTimeout(timeout);
-        timeout = setTimeout(function () {
-          qsRegex = ($input.val() !== '') ? new RegExp($input.val(), 'gi') : null;
-          console.log('qsRegex:', qsRegex);
-          $recipesIsotope.isotope();
-          checkResults();
-        }, 200);
-      });
-    }
-
-    function checkResults() {
-      const count = $recipesIsotope.data('isotope').filteredItems.length;
-      if (count) {
-        $noResultsMessage.addClass('d-none');
-      } else {
-        $noResultsMessage.removeClass('d-none');
-      }
-    }
-
+  const items = Array.from(list.querySelectorAll('[data-component="recipe-teaser"]')).map((el, i) => {
+    el.style.viewTransitionName = 'recipe-' + i;
+    return {el, text: searchableText(el.dataset.tags + ' ' + el.textContent)};
   });
 
-})(jQuery);
-
-(function ($) {
-  $.fn.getSearchableText = function () {
-    const $element = $(this);
-    return $element.data('tags') + ' ' +
-        $element
-            .text()
-            .replace(/\u00ad/gi, '') // soft hyphen
-            .replace(/\u00a0/gi, ' ') // non-breaking-space
-            .replace(/\u0009/gi, ' ') // horizontal tab
-            .replace(/\u000d/gi, ' ') // carriage return
-            .replace(/\u000a/gi, ' ') // line feed
-            .replace(/\u2026/gi, '...') // horizontal ellipsis
-            .replace(/\s\s/gi, ' '); // double spaces
+  function searchableText(text) {
+    return text
+      .replace(/­/g, '') // soft hyphen
+      .replace(/[ \s]+/g, ' ') // non-breaking space, tabs, line breaks
+      .replace(/…/g, '...') // horizontal ellipsis
+      .toLowerCase();
   }
-})(jQuery);
+
+  function filter() {
+    const term = searchableText(input.value).trim();
+    const update = () => {
+      let count = 0;
+      items.forEach(item => {
+        item.el.hidden = !item.text.includes(term);
+        count += item.el.hidden ? 0 : 1;
+      });
+      noResults.classList.toggle('d-none', count > 0);
+    };
+
+    if (document.startViewTransition && !calm) {
+      document.startViewTransition(update);
+    } else {
+      update();
+    }
+  }
+
+  form.addEventListener('submit', e => e.preventDefault());
+  input.addEventListener('input', () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(filter, 200);
+  });
+})();
+
+
+// image sliders (recipe pages): a scroll-snap strip (see _slider.scss); the
+// arrows move by one image and wrap around at both ends
+(function () {
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll('.slider').forEach(slider => {
+    const frame = document.createElement('div');
+    frame.className = 'slider-frame';
+    slider.parentNode.insertBefore(frame, slider);
+    frame.appendChild(slider);
+
+    const prev = button('slider-prev', 'Vorheriges Bild', -1);
+    const next = button('slider-next', 'Nächstes Bild', 1);
+    frame.appendChild(prev);
+    frame.appendChild(next);
+
+    function button(className, label, direction) {
+      const el = document.createElement('button');
+      el.type = 'button';
+      el.className = className;
+      el.setAttribute('aria-label', label);
+      el.innerHTML = ICONS.arrow;
+      el.addEventListener('click', () => move(direction));
+      return el;
+    }
+
+    function move(direction) {
+      const max = slider.scrollWidth - slider.clientWidth;
+      const gap = parseFloat(getComputedStyle(slider).columnGap) || 0;
+      const step = slider.firstElementChild.getBoundingClientRect().width + gap;
+      let left = slider.scrollLeft + direction * step;
+      if (direction > 0 && slider.scrollLeft >= max - 2) {
+        left = 0;
+      } else if (direction < 0 && slider.scrollLeft <= 2) {
+        left = max;
+      }
+      slider.scrollTo({left, behavior: calm ? 'auto' : 'smooth'});
+    }
+
+    // no arrows when all images fit
+    new ResizeObserver(() => {
+      prev.hidden = next.hidden = slider.scrollWidth <= slider.clientWidth + 1;
+    }).observe(slider);
+  });
+})();
+
+
+// lightbox for images linked with data-lightbox: links sharing the same value
+// form a gallery (arrows, counter, swipe), an empty value shows a single image.
+// Opens zooming out of the thumbnail and closes back into it; a click on the
+// image (or the zoom button) shows it at full size.
+(function () {
+  const links = Array.from(document.querySelectorAll('a[data-lightbox]'));
+  if (!links.length) {
+    return;
+  }
+
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const touch = window.matchMedia('(pointer: coarse)').matches;
+  const DURATION = calm ? 0 : 330;
+  const EASING = 'cubic-bezier(.5, 0, .14, 1)';
+  const IDLE_AFTER = 3000;
+  const SWIPE = 50;
+
+  const dialog = document.createElement('dialog');
+  dialog.className = 'lightbox';
+  dialog.setAttribute('aria-label', 'Bildansicht');
+  dialog.innerHTML =
+    '<div class="lightbox-bg"></div>' +
+    '<div class="lightbox-stage"><img class="lightbox-img" alt=""></div>' +
+    '<div class="lightbox-spinner"></div>' +
+    '<div class="lightbox-bar">' +
+      '<span class="lightbox-counter" aria-live="polite"></span>' +
+      '<div class="lightbox-tools">' +
+        '<button type="button" class="lightbox-zoom" aria-label="Zoomen">' + ICONS.zoom + '</button>' +
+        '<button type="button" class="lightbox-close" aria-label="Schließen">' + ICONS.close + '</button>' +
+      '</div>' +
+    '</div>' +
+    '<button type="button" class="lightbox-prev" aria-label="Vorheriges Bild">' + ICONS.arrow + '</button>' +
+    '<button type="button" class="lightbox-next" aria-label="Nächstes Bild">' + ICONS.arrow + '</button>' +
+    '<p class="lightbox-caption" hidden></p>';
+  document.body.appendChild(dialog);
+
+  const find = selector => dialog.querySelector(selector);
+  const bg = find('.lightbox-bg');
+  const stage = find('.lightbox-stage');
+  const img = find('.lightbox-img');
+  const counter = find('.lightbox-counter');
+  const caption = find('.lightbox-caption');
+  const zoomButton = find('.lightbox-zoom');
+  const prevButton = find('.lightbox-prev');
+  const nextButton = find('.lightbox-next');
+
+  let group = [];
+  let index = 0;
+  let loading = 0; // id of the latest load, older ones are dropped
+  let closing = false;
+  let idleTimer;
+
+  links.forEach(link => link.addEventListener('click', e => {
+    if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) {
+      return; // new tab/window keeps working
+    }
+    e.preventDefault();
+    const name = link.dataset.lightbox;
+    group = name ? links.filter(other => other.dataset.lightbox === name) : [link];
+    open(group.indexOf(link));
+  }));
+
+  function open(i) {
+    // nothing focused, so closing doesn't restore (and scroll to) the link
+    if (document.activeElement) {
+      document.activeElement.blur();
+    }
+    document.body.classList.add('lightbox-open');
+    dialog.showModal();
+    dialog.classList.add('is-open');
+    wake();
+    fade(bg, 0, 1);
+    show(i).then(ok => ok && animateFromThumb());
+  }
+
+  function close() {
+    if (!dialog.open || closing) {
+      return;
+    }
+    closing = true;
+    zoomOut(false);
+    dialog.classList.remove('is-open');
+    const from = img.getBoundingClientRect();
+    const thumb = visibleThumb(group[index]);
+    const animation = thumb && img.complete && from.width
+      ? img.animate([{transform: 'none'}, {transform: flip(thumb, from)}], {duration: DURATION, easing: EASING, fill: 'forwards'})
+      : fade(img, 1, 0);
+    fade(bg, 1, 0);
+    animation.finished.then(() => dialog.close());
+  }
+
+  // cleanup also runs when the browser closes the dialog by itself
+  dialog.addEventListener('close', () => {
+    img.getAnimations().concat(bg.getAnimations()).forEach(a => a.cancel());
+    img.removeAttribute('src');
+    dialog.classList.remove('is-open', 'is-zoomed', 'is-idle');
+    document.body.classList.remove('lightbox-open');
+    group[index].focus({preventScroll: true});
+    closing = false;
+  });
+
+  // Esc: close with the animation
+  dialog.addEventListener('cancel', e => {
+    e.preventDefault();
+    close();
+  });
+
+  // loads image i; resolves true once it is decoded (false if a newer load won)
+  function show(i) {
+    const link = group[i];
+    const thumb = link.querySelector('img');
+    const id = ++loading;
+    index = i;
+
+    dialog.classList.add('is-loading');
+    img.style.opacity = '0';
+    img.src = link.href;
+    img.alt = thumb ? thumb.alt : '';
+    caption.textContent = link.dataset.caption || '';
+    caption.hidden = !link.dataset.caption;
+    counter.textContent = group.length > 1 ? (i + 1) + ' / ' + group.length : '';
+    prevButton.hidden = i === 0;
+    nextButton.hidden = i === group.length - 1;
+
+    // preload the neighbours
+    [i - 1, i + 1].filter(n => group[n]).forEach(n => {
+      new Image().src = group[n].href;
+    });
+
+    return img.decode().catch(() => null).then(() => {
+      if (id !== loading) {
+        return false;
+      }
+      dialog.classList.remove('is-loading');
+      img.style.opacity = '';
+      updateZoomable();
+      return true;
+    });
+  }
+
+  function go(step) {
+    const i = index + step;
+    if (!group[i] || closing) {
+      return;
+    }
+    zoomOut(false);
+    fade(img, 1, 0, DURATION / 2).finished.then(() => show(i)).then(ok => {
+      img.getAnimations().forEach(a => a.cancel());
+      if (ok) {
+        fade(img, 0, 1);
+      }
+    });
+  }
+
+  function animateFromThumb() {
+    const to = img.getBoundingClientRect();
+    const thumb = visibleThumb(group[index]);
+    if (thumb && to.width) {
+      img.animate([{transform: flip(thumb, to)}, {transform: 'none'}], {duration: DURATION, easing: EASING});
+    } else {
+      fade(img, 0, 1);
+    }
+  }
+
+  // transform that puts the element at rect `to` onto rect `from`
+  function flip(from, to) {
+    return 'translate(' + (from.left - to.left) + 'px, ' + (from.top - to.top) + 'px) ' +
+      'scale(' + (from.width / to.width) + ', ' + (from.height / to.height) + ')';
+  }
+
+  function fade(el, from, to, duration) {
+    return el.animate([{opacity: from}, {opacity: to}], {duration: duration === undefined ? DURATION : duration, fill: 'forwards'});
+  }
+
+  // the thumbnail's rect, if it is actually visible (not scrolled away in the
+  // page or a slider)
+  function visibleThumb(link) {
+    const thumb = link.querySelector('img') || link;
+    const rect = thumb.getBoundingClientRect();
+    const clip = thumb.closest('.slider');
+    const box = clip ? clip.getBoundingClientRect() : {left: 0, right: window.innerWidth};
+    const visible = rect.width && rect.bottom > 0 && rect.top < window.innerHeight &&
+      rect.left >= box.left - 1 && rect.right <= box.right + 1;
+    return visible ? rect : null;
+  }
+
+  // zoom: natural size inside the scrolling stage, centred on the clicked point
+
+  function updateZoomable() {
+    const zoomable = !dialog.classList.contains('is-zoomed') &&
+      (img.naturalWidth > img.clientWidth + 1 || img.naturalHeight > img.clientHeight + 1);
+    dialog.classList.toggle('is-zoomable', zoomable);
+    zoomButton.hidden = !zoomable && !dialog.classList.contains('is-zoomed');
+  }
+
+  function zoomIn(x, y) {
+    const before = img.getBoundingClientRect();
+    const fx = x === undefined ? .5 : (x - before.left) / before.width;
+    const fy = y === undefined ? .5 : (y - before.top) / before.height;
+    dialog.classList.add('is-zoomed');
+    stage.scrollLeft = fx * img.offsetWidth - stage.clientWidth / 2;
+    stage.scrollTop = fy * img.offsetHeight - stage.clientHeight / 2;
+    img.animate([{transform: flip(before, img.getBoundingClientRect())}, {transform: 'none'}], {duration: DURATION, easing: EASING});
+    updateZoomable();
+  }
+
+  function zoomOut(animated) {
+    if (!dialog.classList.contains('is-zoomed')) {
+      return;
+    }
+    const before = img.getBoundingClientRect();
+    dialog.classList.remove('is-zoomed');
+    if (animated) {
+      img.animate([{transform: flip(before, img.getBoundingClientRect())}, {transform: 'none'}], {duration: DURATION, easing: EASING});
+    }
+    updateZoomable();
+  }
+
+  zoomButton.addEventListener('click', () => {
+    if (dialog.classList.contains('is-zoomed')) {
+      zoomOut(true);
+    } else {
+      zoomIn();
+    }
+  });
+  find('.lightbox-close').addEventListener('click', close);
+  prevButton.addEventListener('click', () => go(-1));
+  nextButton.addEventListener('click', () => go(1));
+
+  let swiped = false;
+  stage.addEventListener('click', e => {
+    if (swiped) {
+      swiped = false;
+    } else if (e.target !== img) {
+      close(); // click beside the image
+    } else if (dialog.classList.contains('is-zoomed')) {
+      zoomOut(true);
+    } else if (dialog.classList.contains('is-zoomable')) {
+      zoomIn(e.clientX, e.clientY);
+    } else if (touch) {
+      dialog.classList.toggle('is-idle');
+    }
+  });
+
+  dialog.addEventListener('keydown', e => {
+    wake();
+    if (e.key === 'ArrowLeft') {
+      go(-1);
+    } else if (e.key === 'ArrowRight') {
+      go(1);
+    }
+  });
+
+  window.addEventListener('resize', () => dialog.open && updateZoomable());
+
+  // swipe (touch only): sideways for the next/previous image, up or down to close
+
+  let start = null;
+
+  stage.addEventListener('pointerdown', e => {
+    swiped = false;
+    if (e.pointerType === 'mouse' || dialog.classList.contains('is-zoomed') || !e.isPrimary) {
+      return;
+    }
+    start = {x: e.clientX, y: e.clientY};
+  });
+
+  stage.addEventListener('pointermove', e => {
+    if (!start || !e.isPrimary) {
+      return;
+    }
+    const dx = e.clientX - start.x;
+    const dy = e.clientY - start.y;
+    if (Math.abs(dx) > Math.abs(dy)) {
+      img.style.transform = 'translateX(' + dx + 'px)';
+      bg.style.opacity = '';
+    } else {
+      img.style.transform = 'translateY(' + dy + 'px)';
+      bg.style.opacity = String(1 - Math.min(Math.abs(dy) / 400, .6));
+    }
+  });
+
+  function endSwipe(e) {
+    if (!start) {
+      return;
+    }
+    const dx = e.clientX - start.x;
+    const dy = e.clientY - start.y;
+    start = null;
+    swiped = Math.abs(dx) > 10 || Math.abs(dy) > 10;
+    img.style.transform = '';
+    bg.style.opacity = '';
+    if (e.type === 'pointercancel') {
+      return;
+    }
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > SWIPE) {
+      go(dx < 0 ? 1 : -1);
+    } else if (Math.abs(dy) > SWIPE * 1.6) {
+      close();
+    }
+  }
+
+  stage.addEventListener('pointerup', endSwipe);
+  stage.addEventListener('pointercancel', endSwipe);
+
+  // controls fade out after a few idle seconds (mouse), a tap brings them back (touch)
+
+  function wake() {
+    dialog.classList.remove('is-idle');
+    clearTimeout(idleTimer);
+    if (!touch) {
+      idleTimer = setTimeout(() => dialog.classList.add('is-idle'), IDLE_AFTER);
+    }
+  }
+
+  dialog.addEventListener('pointermove', e => {
+    if (e.pointerType === 'mouse') {
+      wake();
+    }
+  });
+})();
 
 
 (function () {
@@ -202,6 +551,7 @@
   window.addEventListener('touchmove', onTouch, {passive: true});
 
   button.addEventListener('click', () => {
+    root.classList.add('torch-fade');
     if (root.classList.contains('dark')) {
       root.classList.remove('dark');
       sessionStorage.setItem('dark', 'false');

@@ -1,0 +1,92 @@
+// screen only – image slider on recipe pages (see custom.js): a horizontal
+// scroll-snap strip showing data-slides images at once; custom.js wraps it in
+// .slider-frame and adds the round arrow buttons
+
+.slider-frame {
+  position: relative;
+}
+
+.slider {
+  --slides: 2;
+  --gap: #{$grid-gutter-width * .5};
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - (var(--slides) - 1) * var(--gap)) / var(--slides));
+  gap: var(--gap);
+  align-items: start;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &[data-slides="3"] {
+    --slides: 3;
+  }
+
+  > a {
+    scroll-snap-align: start;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}
+
+.slider-prev,
+.slider-next {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: $bbq-flame;
+  color: $bbq-bg;
+  opacity: .75;
+  cursor: pointer;
+  transition: opacity .2s;
+
+  &:hover,
+  &:focus-visible {
+    opacity: 1;
+  }
+
+  &[hidden] {
+    display: none;
+  }
+
+  svg {
+    width: 12px;
+    height: 12px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+// centred on the gutter, like the column edges
+.slider-prev {
+  left: $grid-gutter-width * -.5;
+
+  svg {
+    transform: rotate(180deg);
+  }
+}
+
+.slider-next {
+  right: $grid-gutter-width * -.5;
+}

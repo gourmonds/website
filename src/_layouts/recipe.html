@@ -22,8 +22,8 @@ layout: default
                     {% if description %}{{ description }}{% endif %}
                 </div>
             </div>
-            <div class="col text-right">
-                <img src="{{ teaserimage }}" alt="{{ title }}" />
+            <div class="col text-end">
+                <img src="{{ teaserimage }}" alt="{{ title | escape }}" loading="eager" />
             </div>
         </div>
     </div>
@@ -32,9 +32,6 @@ layout: default
 
     <div class="d-none d-print-block mt-2">
         <hr />
-        <div class="d-flex align-items-center">
-            <div class="mr-2"></div>
-            <div class="small">{{ site.url }}{{ page.url }}</div>
-        </div>
+        <div class="small">{{ site.url }}{{ page.url }}</div>
     </div>
 </div>

@@ -6,7 +6,7 @@
 
         <header id="site-header" class="d-print-none">
             <div class="container-xl header-inner">
-                <a href="/" class="brand"><img src="/assets/images/logo.svg" class="logo" alt="Logo: GourMonds"></a>
+                <a href="/" class="brand"><img src="/assets/images/logo.svg" class="logo" alt="Logo: GourMonds" eleventy:ignore></a>
                 <nav class="main" id="main-nav" aria-label="Hauptnavigation">
                     <ul>
                         <li><a href="/gezeigt/"{% if page.url contains '/gezeigt/' %} aria-current="page"{% endif %}>Gezeigt</a></li>
@@ -29,7 +29,16 @@
         </button>
 
         {% if hero %}
-        <section class="hero d-print-none" style="--hero-image: url('{{ hero.image }}')">
+        <section class="hero d-print-none">
+            {%- assign hero_formats = 'avif,webp' | split: ',' %}
+            {%- assign hero_widths = '640,1024,1440,1920' | split: ',' %}
+            {%- comment %} covers a hero of up to 88vh at 3:2, so on tall screens it is drawn wider than the viewport {% endcomment %}
+            <picture class="hero-image">
+                {%- for format in hero_formats %}
+                <source type="image/{{ format }}" sizes="max(100vw, 132vh)" srcset="{% for width in hero_widths %}{{ hero.image }}-{{ width }}.{{ format }} {{ width }}w{% unless forloop.last %}, {% endunless %}{% endfor %}">
+                {%- endfor %}
+                <img src="{{ hero.image }}-1920.jpg" alt="" fetchpriority="high" eleventy:ignore>
+            </picture>
             <div class="embers" aria-hidden="true">{% for i in (1..14) %}<span></span>{% endfor %}</div>
             <div class="container-xl hero-content">
                 {% if hero.kicker %}<p class="kicker">{{ hero.kicker }}</p>{% endif %}
@@ -52,7 +61,7 @@
         <footer id="site-footer" class="d-print-none">
             <div class="container-xl footer-inner">
                 <div>
-                    <img src="/assets/images/logo.svg" class="logo" alt="GourMonds">
+                    <img src="/assets/images/logo.svg" class="logo" alt="GourMonds" eleventy:ignore>
                     <p>Der beste BBQ-Verein unter'm Wanne-Eickeler Mond. Seit 2008.</p>
                 </div>
                 <nav aria-label="Footer">
