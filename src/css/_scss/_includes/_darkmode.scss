@@ -12,7 +12,6 @@
   z-index: 9999;
   opacity: 0;
   visibility: hidden;
-  transition: opacity .4s ease, visibility 0s .4s;
 
   --x: 50vw;
   --y: 50vh;
@@ -49,5 +48,15 @@
 .dark #torch {
   opacity: 1;
   visibility: visible;
+}
+
+// fade only when switched by the button (custom.js adds .torch-fade), never
+// while a page loads: browsers may run transitions from the unstyled state
+// then, which flashes the darkness on every page change
+.torch-fade #torch {
+  transition: opacity .4s ease, visibility 0s .4s;
+}
+
+.torch-fade.dark #torch {
   transition: opacity .4s ease;
 }

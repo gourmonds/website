@@ -162,6 +162,24 @@ ol li, ul li {
 
 // recipe grid
 
+// recipe search (custom.js) runs as a view transition: hidden cards shrink
+// and fade, the remaining ones glide to their new place
+::view-transition-group(*) {
+  animation-duration: .4s;
+}
+
+::view-transition-old(*):only-child {
+  animation: recipe-hide .4s both;
+}
+
+::view-transition-new(*):only-child {
+  animation: recipe-hide .4s both reverse;
+}
+
+@keyframes recipe-hide {
+  to { opacity: 0; transform: scale(.001); }
+}
+
 .recipe-teaser-col {
   .inner {
     @include link-arrow(bottom, 1rem);
@@ -287,20 +305,6 @@ main > section > article.mb-4 {
   .page-link {
     border-radius: $radius !important;
   }
-}
-
-.sr-only {
-  @include visually-hidden;
-}
-
-// slider
-
-.slick .slick-dots li button:before {
-  color: $bbq-text;
-}
-
-.slick .slick-dots li.slick-active button:before {
-  color: $bbq-flame;
 }
 
 // footer
