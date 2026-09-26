@@ -1,24 +1,59 @@
 // self-hosted fonts (see 11ty/configuration.js), used by screen and print
 
+// Fira Sans Extra Condensed is static: one file per weight in use
 @font-face {
-  font-family: "Oswald";
-  src: url("/assets/fonts/oswald.woff2") format("woff2");
-  font-weight: 200 700;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("/assets/fonts/inter.woff2") format("woff2");
-  font-weight: 100 900;
+  font-family: "Fira Sans Extra Condensed";
+  src: url("/assets/fonts/fira-sans-extra-condensed-400.woff2") format("woff2");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Inter";
-  src: url("/assets/fonts/inter-italic.woff2") format("woff2");
-  font-weight: 100 900;
+  font-family: "Fira Sans Extra Condensed";
+  src: url("/assets/fonts/fira-sans-extra-condensed-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fira Sans Extra Condensed";
+  src: url("/assets/fonts/fira-sans-extra-condensed-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Fira Sans Extra Condensed";
+  src: url("/assets/fonts/fira-sans-extra-condensed-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+// Libertinus Sans only comes in regular, italic and bold (no bold italic)
+@font-face {
+  font-family: "Libertinus Sans";
+  src: url("/assets/fonts/libertinus-sans.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Libertinus Sans";
+  src: url("/assets/fonts/libertinus-sans-italic.woff2") format("woff2");
+  font-weight: 400;
   font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Libertinus Sans";
+  src: url("/assets/fonts/libertinus-sans-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
   font-display: swap;
 }

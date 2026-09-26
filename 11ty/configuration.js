@@ -8,9 +8,13 @@ module.exports = {
             staticFiles['src/.htaccess'] = '.htaccess';
             staticFiles[path.join('node_modules', 'slick-slider', 'slick', 'fonts')] = path.join('assets', 'slick');
             staticFiles[path.join('node_modules', 'slick-slider', 'slick', 'ajax-loader.gif')] = path.join('assets', 'slick', 'ajax-loader.gif');
-            staticFiles[path.join('node_modules', '@fontsource-variable', 'oswald', 'files', 'oswald-latin-wght-normal.woff2')] = path.join('assets', 'fonts', 'oswald.woff2');
-            staticFiles[path.join('node_modules', '@fontsource-variable', 'inter', 'files', 'inter-latin-wght-normal.woff2')] = path.join('assets', 'fonts', 'inter.woff2');
-            staticFiles[path.join('node_modules', '@fontsource-variable', 'inter', 'files', 'inter-latin-wght-italic.woff2')] = path.join('assets', 'fonts', 'inter-italic.woff2');
+            staticFiles[path.join('node_modules', '@fontsource', 'fira-sans-extra-condensed', 'files', 'fira-sans-extra-condensed-latin-400-normal.woff2')] = path.join('assets', 'fonts', 'fira-sans-extra-condensed-400.woff2');
+            staticFiles[path.join('node_modules', '@fontsource', 'fira-sans-extra-condensed', 'files', 'fira-sans-extra-condensed-latin-500-normal.woff2')] = path.join('assets', 'fonts', 'fira-sans-extra-condensed-500.woff2');
+            staticFiles[path.join('node_modules', '@fontsource', 'fira-sans-extra-condensed', 'files', 'fira-sans-extra-condensed-latin-600-normal.woff2')] = path.join('assets', 'fonts', 'fira-sans-extra-condensed-600.woff2');
+            staticFiles[path.join('node_modules', '@fontsource', 'fira-sans-extra-condensed', 'files', 'fira-sans-extra-condensed-latin-700-normal.woff2')] = path.join('assets', 'fonts', 'fira-sans-extra-condensed-700.woff2');
+            staticFiles[path.join('node_modules', '@fontsource', 'libertinus-sans', 'files', 'libertinus-sans-latin-400-normal.woff2')] = path.join('assets', 'fonts', 'libertinus-sans.woff2');
+            staticFiles[path.join('node_modules', '@fontsource', 'libertinus-sans', 'files', 'libertinus-sans-latin-400-italic.woff2')] = path.join('assets', 'fonts', 'libertinus-sans-italic.woff2');
+            staticFiles[path.join('node_modules', '@fontsource', 'libertinus-sans', 'files', 'libertinus-sans-latin-700-normal.woff2')] = path.join('assets', 'fonts', 'libertinus-sans-bold.woff2');
             return staticFiles;
         })(),
         liquid: {

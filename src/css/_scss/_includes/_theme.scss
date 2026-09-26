@@ -6,18 +6,18 @@ $bbq-surface-2: #1d1a17;
 $bbq-line:      #2c2723;
 $bbq-text:      #ece6df;
 $bbq-muted:     #a39a90;
-$bbq-ember:     #ff5a1f;
-$bbq-flame:     #ffc426; // logo gold
-$bbq-gradient:  linear-gradient(120deg, $bbq-ember 0%, #ff8a1f 45%, $bbq-flame 100%);
+$bbq-flame:     #ffc426; // logo gold, the only accent colour
 
-$bbq-font-display: "Oswald", "Arial Narrow", sans-serif;
-$bbq-font-body:    "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+$bbq-font-display: "Fira Sans Extra Condensed", "Arial Narrow", sans-serif;
+$bbq-font-body:    "Libertinus Sans", "Linux Biolinum O", "Gill Sans", "Segoe UI", sans-serif;
 
 // typography: screen and print
 $font-family-sans-serif: $bbq-font-body;
 $headings-font-family:   $bbq-font-display;
 $headings-font-weight:   600;
 $headings-line-height:   1.1;
+// Libertinus Sans has a small x-height, so the body text needs a bit more size
+$font-size-base:         1.25rem;
 
 // colour overrides (print keeps bootstrap's light defaults)
 $bbq-print: false !default;
@@ -52,7 +52,7 @@ $hr-opacity: null !default;
   $body-bg:    $bbq-bg !global;
   $body-color: $bbq-text !global;
   $link-color: $bbq-flame !global;
-  $link-hover-color: $bbq-ember !global;
+  $link-hover-color: mix(#fff, $bbq-flame, 40%) !global;
   $link-decoration: none !global;
   $border-color: $bbq-line !global;
   $text-muted: $bbq-muted !global;
@@ -69,8 +69,8 @@ $hr-opacity: null !default;
   $input-placeholder-color: $bbq-muted !global;
   $input-focus-bg:          $bbq-surface-2 !global;
   $input-focus-color:       $bbq-text !global;
-  $input-focus-border-color: $bbq-ember !global;
-  $input-focus-box-shadow:  0 0 0 .25rem rgba($bbq-ember, .25) !global;
+  $input-focus-border-color: $bbq-flame !global;
+  $input-focus-box-shadow:  0 0 0 .25rem rgba($bbq-flame, .25) !global;
 
   $card-bg:           $bbq-surface !global;
   $card-border-color: $bbq-line !global;

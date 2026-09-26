@@ -15,8 +15,9 @@ $pagination-padding-y:                .5rem;
 $pagination-padding-x:                .85rem;
 $pagination-padding-y-sm:             .25rem;
 $pagination-padding-x-sm:             .5rem;
-$pagination-active-bg:                $bbq-ember;
-$pagination-active-border-color:      $bbq-ember;
+$pagination-active-bg:                $bbq-flame;
+$pagination-active-border-color:      $bbq-flame;
+$pagination-active-color:             $bbq-bg;
 
 // Layout & components
 @import "../../../../node_modules/bootstrap/scss/root";

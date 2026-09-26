@@ -39,7 +39,7 @@ $nf-ease: cubic-bezier(.3, .7, .3, 1);
     content: "";
     position: absolute;
     inset: 15% 5% 20%;
-    background: radial-gradient(ellipse at 50% 45%, rgba($bbq-ember, .35), transparent 70%);
+    background: radial-gradient(ellipse at 50% 45%, rgba($bbq-flame, .35), transparent 70%);
     animation: nf-glow 3s ease-in-out infinite alternate;
   }
 }
