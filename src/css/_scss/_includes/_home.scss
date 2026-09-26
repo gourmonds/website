@@ -14,18 +14,6 @@
     linear-gradient(to right, rgba($bbq-bg, .85) 0%, transparent 65%),
     var(--hero-image) 60% 55% / cover no-repeat;
 
-  // warm glow from below, like a bed of coals
-  &::after {
-    content: "";
-    position: absolute;
-    inset: auto -10% -30% -10%;
-    height: 60%;
-    z-index: -1;
-    background: radial-gradient(ellipse at 50% 100%, rgba($bbq-ember, .45), rgba($bbq-ember, 0) 65%);
-    animation: glow 5s ease-in-out infinite alternate;
-    pointer-events: none;
-  }
-
   .hero-content {
     position: relative;
     z-index: 1;
@@ -36,8 +24,8 @@
     font-size: clamp(3rem, 9vw, 7rem);
     font-weight: 700;
     text-transform: uppercase;
-    line-height: .95;
-    letter-spacing: -.01em;
+    line-height: 1.05;
+    letter-spacing: .01em;
     max-width: 12ch;
     margin: 0 0 1.5rem;
     text-shadow: 0 4px 30px rgba(0, 0, 0, .6);
@@ -61,7 +49,7 @@
   display: inline-flex;
   align-items: center;
   padding: .85rem 1.6rem;
-  border-radius: 999px;
+  border-radius: $radius;
   font-family: $bbq-font-display;
   font-weight: 600;
   text-transform: uppercase;
@@ -74,13 +62,13 @@
 }
 
 .btn-ember {
-  background: $bbq-gradient;
+  background: $bbq-flame;
   color: #1a0d05;
-  box-shadow: 0 8px 30px rgba($bbq-ember, .35);
+  box-shadow: 0 8px 30px rgba($bbq-flame, .35);
 
   &:hover {
     color: #1a0d05;
-    box-shadow: 0 12px 40px rgba($bbq-ember, .55);
+    box-shadow: 0 12px 40px rgba($bbq-flame, .55);
   }
 }
 
@@ -97,6 +85,12 @@
 }
 
 // rising embers
+// flying sparks: the one place orange is allowed – they start hot and cool
+// down from yellow-white to orange-red while rising
+$spark-hot:  #ffe39a;
+$spark-warm: #ff8c1a;
+$spark-cool: #e5431a;
+
 .embers {
   position: absolute;
   inset: 0;
@@ -109,8 +103,8 @@
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: $bbq-flame;
-    box-shadow: 0 0 6px 2px rgba($bbq-ember, .8);
+    background: $spark-hot;
+    box-shadow: 0 0 6px 2px rgba($spark-warm, .8);
     opacity: 0;
     animation: ember 7s linear infinite;
   }
@@ -134,19 +128,13 @@
 
 @keyframes ember {
   0%   { transform: translate(0, 0) scale(1); opacity: 0; }
-  10%  { opacity: 1; }
-  50%  { transform: translate(-25px, -45vh) scale(.8); }
-  100% { transform: translate(20px, -90vh) scale(.2); opacity: 0; }
-}
-
-@keyframes glow {
-  from { opacity: .7; }
-  to   { opacity: 1; }
+  10%  { opacity: 1; background: $spark-hot; box-shadow: 0 0 6px 2px rgba($spark-warm, .8); }
+  50%  { transform: translate(-25px, -45vh) scale(.8); background: $spark-warm; box-shadow: 0 0 6px 2px rgba($spark-warm, .7); }
+  100% { transform: translate(20px, -90vh) scale(.2); opacity: 0; background: $spark-cool; box-shadow: 0 0 4px 1px rgba($spark-cool, .6); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .embers { display: none; }
-  .hero::after { animation: none; }
 }
 
 // intro
@@ -170,35 +158,57 @@
       content: "";
       position: absolute;
       inset: 10px -10px -10px 10px;
-      border: 1px solid rgba($bbq-ember, .5);
+      border: 1px solid rgba($bbq-flame, .5);
       border-radius: $radius;
       z-index: -1;
     }
   }
 }
 
+// facts beside the intro text (below it on smaller screens)
+.intro-stats {
+  @include media-breakpoint-up(lg) {
+    align-self: center;
+  }
+}
+
 .stats {
   list-style: none;
-  margin: 4rem 0 0;
+  margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1px;
-  background: $bbq-line;
-  border: 1px solid $bbq-line;
-  border-radius: $radius;
-  overflow: hidden;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+
+  @include media-breakpoint-up(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   @include media-breakpoint-up(md) {
     grid-template-columns: repeat(4, 1fr);
   }
 
+  // 2x2 again once it sits in the narrow column beside the text
+  @include media-breakpoint-up(lg) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // phones: number beside its label, above it from sm on
   li {
     background: $bbq-surface;
-    padding: 1.75rem 1.25rem;
+    border: 1px solid $bbq-line;
+    border-radius: $radius;
+    padding: 1.25rem;
     display: flex;
-    flex-direction: column;
-    gap: .25rem;
+    align-items: center;
+    gap: 1.25rem;
+
+    @include media-breakpoint-up(sm) {
+      padding: 1.75rem 1.25rem;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: .5rem;
+    }
   }
 
   strong {
@@ -206,17 +216,15 @@
     font-size: clamp(2.2rem, 5vw, 3.2rem);
     font-weight: 700;
     line-height: 1;
-    background: $bbq-gradient;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: $bbq-flame;
+    flex: none;
+    min-width: 4ch;
   }
 
   span {
     color: $bbq-muted;
-    font-size: .9rem;
-    text-transform: uppercase;
-    letter-spacing: .06em;
+    font-size: 1.05rem;
+    line-height: 1.4;
   }
 }
 
@@ -252,18 +260,18 @@
       border-color: $bbq-line;
 
       &:has(strong) {
-        background: linear-gradient(135deg, rgba($bbq-ember, .12), transparent 60%), $bbq-surface;
+        background: linear-gradient(135deg, rgba($bbq-flame, .12), transparent 60%), $bbq-surface;
       }
 
       @include link-arrow;
 
       &:hover {
-        border-color: rgba($bbq-ember, .6);
+        border-color: rgba($bbq-flame, .6);
         transform: translateY(-2px);
-        box-shadow: 0 10px 30px -10px rgba($bbq-ember, .35);
+        box-shadow: 0 10px 30px -10px rgba($bbq-flame, .35);
 
         .stretched-link {
-          color: $bbq-ember;
+          color: $bbq-flame;
         }
       }
     }
@@ -281,7 +289,7 @@
     font-size: 1.5rem;
     font-weight: 700;
     line-height: 1.2;
-    color: $bbq-ember;
+    color: $bbq-flame;
     min-width: 3.2rem;
   }
 
@@ -289,9 +297,9 @@
     display: block;
     font-family: $bbq-font-display;
     font-weight: 600;
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     letter-spacing: .02em;
-    color: $bbq-flame;
+    color: $bbq-text;
   }
 
   div {

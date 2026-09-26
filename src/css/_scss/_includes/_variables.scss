@@ -1,8 +1,7 @@
 // layout:
 
 $header-height: 72px;
-$radius: 14px;
-$radius-sm: 8px;
+$radius: 6px;
 $ease-out: cubic-bezier(.2, .8, .2, 1);
 
 // round arrow button marking a fully clickable box. Call it inside the box;
@@ -18,10 +17,11 @@ $ease-out: cubic-bezier(.2, .8, .2, 1);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba($bbq-ember, .5);
+    border: 2px solid $bbq-flame;
     border-radius: 50%;
-    color: $bbq-ember;
-    font-size: 1.1rem;
+    color: $bbq-flame;
+    font-size: 1.25rem;
+    font-weight: 700;
     line-height: 1;
     pointer-events: none;
     transition: background .2s, color .2s, border-color .2s, transform .2s $ease-out;
@@ -35,7 +35,7 @@ $ease-out: cubic-bezier(.2, .8, .2, 1);
   }
 
   &:hover::after {
-    background: $bbq-gradient;
+    background: $bbq-flame;
     border-color: transparent;
     color: #1a0d05;
     transform: translateX(3px);

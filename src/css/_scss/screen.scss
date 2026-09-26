@@ -16,10 +16,7 @@ html {
 
 body {
   overflow-y: scroll;
-  background:
-    radial-gradient(ellipse 80% 40% at 50% -10%, rgba($bbq-ember, .12), transparent 70%),
-    $bbq-bg;
-  background-attachment: fixed;
+  background: $bbq-bg;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -33,6 +30,6 @@ body {
 }
 
 ::selection {
-  background: $bbq-ember;
-  color: #fff;
+  background: $bbq-flame;
+  color: $bbq-bg;
 }

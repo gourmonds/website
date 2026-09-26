@@ -51,9 +51,9 @@
   transition: border-color .2s, color .2s, background .2s;
 
   &:hover, &:focus-visible {
-    border-color: $bbq-ember;
+    border-color: $bbq-flame;
     color: $bbq-flame;
-    background: rgba($bbq-ember, .08);
+    background: rgba($bbq-flame, .08);
   }
 }
 
@@ -92,7 +92,7 @@
   box-shadow:
     0 0 6px rgba($bbq-flame, .55),
     0 0 18px rgba($bbq-flame, .3),
-    0 0 40px rgba($bbq-ember, .18),
+    0 0 40px rgba($bbq-flame, .18),
     inset 0 0 8px rgba($bbq-flame, .35);
   animation: switch-glow 3.5s ease-in-out infinite alternate;
 
@@ -102,8 +102,8 @@
 }
 
 @keyframes switch-glow {
-  from { box-shadow: 0 0 5px rgba($bbq-flame, .45), 0 0 14px rgba($bbq-flame, .22), 0 0 32px rgba($bbq-ember, .12), inset 0 0 7px rgba($bbq-flame, .3); }
-  to   { box-shadow: 0 0 7px rgba($bbq-flame, .6),  0 0 20px rgba($bbq-flame, .34), 0 0 44px rgba($bbq-ember, .2),  inset 0 0 9px rgba($bbq-flame, .4); }
+  from { box-shadow: 0 0 5px rgba($bbq-flame, .45), 0 0 14px rgba($bbq-flame, .22), 0 0 32px rgba($bbq-flame, .12), inset 0 0 7px rgba($bbq-flame, .3); }
+  to   { box-shadow: 0 0 7px rgba($bbq-flame, .6),  0 0 20px rgba($bbq-flame, .34), 0 0 44px rgba($bbq-flame, .2),  inset 0 0 9px rgba($bbq-flame, .4); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -145,7 +145,7 @@ nav.main ul {
 
     a {
       padding: .5rem .9rem;
-      font-size: .95rem;
+      font-size: 1.1rem;
 
       &::after {
         content: "";
@@ -154,7 +154,7 @@ nav.main ul {
         right: .9rem;
         bottom: .2rem;
         height: 2px;
-        background: $bbq-gradient;
+        background: $bbq-flame;
         transform: scaleX(0);
         transform-origin: left;
         transition: transform .3s $ease-out;
@@ -196,7 +196,7 @@ nav.main ul {
     position: fixed;
     inset: $header-height 0 0 0;
     background:
-      radial-gradient(ellipse 120% 60% at 50% 110%, rgba($bbq-ember, .25), transparent 60%),
+      radial-gradient(ellipse 120% 60% at 50% 110%, rgba($bbq-flame, .25), transparent 60%),
       $bbq-bg;
     opacity: 0;
     visibility: hidden;
