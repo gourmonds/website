@@ -4,27 +4,26 @@ $header-height: 72px;
 $radius: 6px;
 $ease-out: cubic-bezier(.2, .8, .2, 1);
 
+// arrow drawn as SVG instead of the "→" glyph, which looks different in every font
+@function arrow-svg($color) {
+  @return escape-svg(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='#{$color}' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M5 12h14M13 6l6 6-6 6'/></svg>"));
+}
+
 // round arrow button marking a fully clickable box. Call it inside the box;
 // the box needs position: relative. Pass $vertical: bottom to pin it to the
 // bottom corner instead of centering it.
 @mixin link-arrow($vertical: center, $offset: 1.25rem) {
   &::after {
-    content: "→";
+    content: "";
     position: absolute;
     right: $offset;
     width: 2.25rem;
     height: 2.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     border: 2px solid $bbq-flame;
     border-radius: 50%;
-    color: $bbq-flame;
-    font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 1;
+    background: arrow-svg($bbq-flame) center / 1.25rem no-repeat;
     pointer-events: none;
-    transition: background .2s, color .2s, border-color .2s, transform .2s $ease-out;
+    transition: background-color .2s, border-color .2s, transform .2s $ease-out;
 
     @if $vertical == bottom {
       bottom: $offset;
@@ -35,9 +34,8 @@ $ease-out: cubic-bezier(.2, .8, .2, 1);
   }
 
   &:hover::after {
-    background: $bbq-flame;
+    background: arrow-svg(#1a0d05) center / 1.25rem no-repeat, $bbq-flame;
     border-color: transparent;
-    color: #1a0d05;
     transform: translateX(3px);
   }
 }
