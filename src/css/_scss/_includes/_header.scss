@@ -139,6 +139,11 @@ nav.main ul {
     display: flex;
     gap: .25rem;
 
+    // the global list spacing would push the links off the vertical centre
+    li {
+      margin-bottom: 0;
+    }
+
     li.secondary {
       display: none;
     }
