@@ -25,7 +25,7 @@ jobs:
     # eleventy-img skips images it has already generated: without this cache,
     # every deploy re-encodes all images (several minutes instead of seconds)
     - name: Cache optimized images
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: build/img
         key: images-${{ hashFiles('src/assets/images/**', '11ty/configuration.js') }}
